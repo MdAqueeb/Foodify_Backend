@@ -1,0 +1,61 @@
+package com.foodify.backend_foodify.Entities;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Table(name = "restaurant")
+@Builder
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class Restaurent {
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "restaurant_id")
+    private Long restaurant_id;
+
+    @Column(name = "address")
+    private String restaurent_address;
+
+    @Column(name = "brand")
+    private String restaurent_brand;
+
+    @Column(name = "picture")
+    private String restaurent_picture;
+
+    @Column(name = "active_status", nullable = false)
+    @Builder.Default
+    private Boolean isAvailable = true;
+
+    @Column(name = "delivary_fee")
+    private String restaurent_delivary_fee;
+
+    @Column(name = "service_fee")
+    private String restaurent_service_fee;
+
+    @Column(name = "popular", nullable = false)
+    @Builder.Default
+    private Boolean isPopular = false;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_id", nullable = false)
+    private User user;
+
+    @OneToOne(mappedBy = "restaurent", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Menu menu;
+}
