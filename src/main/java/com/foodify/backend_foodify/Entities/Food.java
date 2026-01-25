@@ -115,8 +115,16 @@ public class Food {
     @OneToMany(mappedBy = "food", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Food_Extra> food_extra;
 
+    @OneToMany(mappedBy = "food", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Cart_Item> cartItems;
+
+    @OneToMany(mappedBy = "food", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Order_item> orderItem;
+
     @PrePersist
     void assignValues() {
         food_extra = new ArrayList<>();
+        cartItems = new ArrayList<>();
+        orderItem = new ArrayList<>();
     }
 }

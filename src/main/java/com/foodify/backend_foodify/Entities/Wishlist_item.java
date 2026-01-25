@@ -20,55 +20,40 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "payments")
+@Table(name = "wishlist_items")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Payment {
+public class Wishlist_item {
     
     @Id
+    @Column(name = "wishlist_item_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "payment_id")
-    private Long payment_id;
-
-    @Column(name = "gateway")
-    private String gateway;
-
-    private String gateway_order_id;
-
-    private String gateway_payment_id;
-
-    @Column(nullable = false)
-    @NotNull
-    private Double amount;
-
-    private String payment_method;
+    private Long wishlist_id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "payment_status", nullable = false)
-    private PaymentStatus payment_status;
+    @Column(name = "item_type", nullable = false)
+    @NotNull
+    private Item_type item_type;
+
+    @Column(name = "item_id", nullable = false)
+    @NotNull
+    private Long item_id;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime created_at;
 
-    enum PaymentStatus{
-        created, 
-        success, 
-        failed
+    enum Item_type{
+        food, 
+        restaurent
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id", nullable = false)
-    private Order order;
+    @ManyToOne(fetch =  FetchType.LAZY)
+    @JoinColumn(name = "wishlist_id", nullable = false)
+    private Wishlist wishlist;
 
     @PrePersist
     void assign_values() {
         created_at = LocalDateTime.now();
     }
 }
-
-

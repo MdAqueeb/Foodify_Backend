@@ -13,27 +13,39 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "order_items")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "wishlists")
-public class Wishlist {
-
+public class Order_item {
+    
     @Id
-    @Column(name = "wishlist_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long wishlist_id;
+    @Column(name = "order_item_id")
+    private Long order_item_id;
+
+    @Column(name = "quantity", nullable = false)
+    @NotNull
+    private Integer quantity;
+
+    @Column(name = "pirce", nullable = false)
+    @NotNull
+    private Double item_price;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "food_id", nullable = false)
+    private Food food;
 
-    // wishlist item 
-    @OneToMany(mappedBy = "wishlist", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Wishlist_item> wishlist_items;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id", nullable = false)
+    private Order order;
+
+    @OneToMany(mappedBy = "order_item", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Order_item_extra> order_item_extra;
 }

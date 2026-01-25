@@ -2,6 +2,7 @@ package com.foodify.backend_foodify.Entities;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.hibernate.validator.constraints.UniqueElements;
@@ -77,6 +78,8 @@ public class User {
 
 
     // payments 
+    @OneToMany(mappedBy="user", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    private List<Payment> payment ;
     // useraddress
     @OneToMany(mappedBy="user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<User_Address> user_address ;
@@ -90,11 +93,17 @@ public class User {
     @OneToMany(mappedBy="user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Restaurent> restaurent ;
     // orders
+    @OneToMany(mappedBy="user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Order> order ;
 
     @PrePersist
     void defaultValues() {
         user_address = new ArrayList<>();
         wishlists = new ArrayList<>();
+        cart = new ArrayList<>();
+        restaurent = new ArrayList<>();
+        order = new ArrayList<>();
+        payment = new ArrayList<>();
     }
 }
 
