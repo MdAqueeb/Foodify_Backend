@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.hibernate.validator.constraints.UniqueElements;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,6 +17,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
@@ -47,7 +50,7 @@ public class User {
 
     @Column(name = "email", nullable = false, unique = true)
     @NotBlank(message = "email does not empty or null")
-    @UniqueElements(message = "email must be unique")
+    // @UniqueElements(message = "email must be unique")
     @Pattern(regexp="^[A-Za-z][A-Za-z0-9._%+-]*@gmail\\\\.com$", message = "Email is not valid")
     private String email;
 
@@ -78,28 +81,33 @@ public class User {
 
     // payments 
     @OneToMany(mappedBy="user", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    @JsonIgnore
     private List<Payment> payment ;
     // useraddress
     @OneToMany(mappedBy="user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<User_Address> user_address ;
     // whislist 
     @OneToMany(mappedBy="user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Wishlist> wishlists ;
     // cart
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Cart> cart;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private Cart cart;
     // restaurents
     @OneToMany(mappedBy="user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Restaurent> restaurent ;
     // orders
     @OneToMany(mappedBy="user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Order> order ;
 
     @PrePersist
     void defaultValues() {
         user_address = new ArrayList<>();
         wishlists = new ArrayList<>();
-        cart = new ArrayList<>();
+        // cart = new ArrayList<>();
         restaurent = new ArrayList<>();
         order = new ArrayList<>();
         payment = new ArrayList<>();

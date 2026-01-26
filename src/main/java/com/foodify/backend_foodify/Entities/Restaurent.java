@@ -3,6 +3,8 @@ package com.foodify.backend_foodify.Entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -62,9 +64,11 @@ public class Restaurent {
     private User user;
 
     @OneToOne(mappedBy = "restaurent", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private Menu menu;
 
     @OneToMany(mappedBy = "restaurent", cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
+    @JsonIgnore
     private List<Order> order;
 
     @PrePersist

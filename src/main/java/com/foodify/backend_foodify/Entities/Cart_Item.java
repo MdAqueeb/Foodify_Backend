@@ -41,8 +41,8 @@ public class Cart_Item{
     private Double price;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cart_id", nullable = false)
-    private Cart cart;
+    @JoinColumn(name = "cart_restaurent_id", nullable = false)
+    private Cart_Restaurent cart_restaurent;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "food_id", nullable = false)
