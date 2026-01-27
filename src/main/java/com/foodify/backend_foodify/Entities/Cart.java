@@ -3,6 +3,8 @@ package com.foodify.backend_foodify.Entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -36,14 +38,17 @@ public class Cart {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private User user;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Cart_Restaurent> cart_Restaurents;
+    @Builder.Default
+    // @JsonIgnore
+    private List<Cart_Restaurent> cart_Restaurents = new ArrayList<>();
 
-    @PrePersist
-    void assignValues() {
-        cart_Restaurents = new ArrayList<>();
-    }
+    // @PrePersist
+    // void assignValues() {
+    //     cart_Restaurents = new ArrayList<>();
+    // }
 }
 

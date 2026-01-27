@@ -1,6 +1,7 @@
 package com.foodify.backend_foodify.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +25,10 @@ public class CartController {
     @PostMapping
     public ResponseEntity<ApiResponse<Cart>> addCart(@PathVariable Long userid, @RequestBody AddToCartDTO addCart){
         Cart crt = cart_service.addToCart(userid, addCart);
-        return null;
+        ApiResponse<Cart> response = new ApiResponse<>();
+        response.setData(crt);
+        response.setSuccess(true);
+        response.setMessage("Added To Cart");
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

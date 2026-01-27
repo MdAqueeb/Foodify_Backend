@@ -16,6 +16,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -23,6 +24,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "menu")
 @Data
 @NoArgsConstructor
+@Builder
 @AllArgsConstructor
 public class Menu {
     @Id
@@ -34,12 +36,10 @@ public class Menu {
     @JoinColumn(name = "restaurant_id", nullable = false, unique = true)
     private Restaurent restaurent;
 
-    @OneToMany(mappedBy = "food_id", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Food> food;
+    @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<Food> foods = new ArrayList<>();
 
-    @PrePersist
-    void assignValues() {
-        food = new ArrayList<>();
-    }
+    
     
 }

@@ -60,6 +60,7 @@ public class Restaurent {
     private Boolean isPopular = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "owner_id", nullable = false)
     private User user;
 
@@ -70,6 +71,10 @@ public class Restaurent {
     @OneToMany(mappedBy = "restaurent", cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
     @JsonIgnore
     private List<Order> order;
+
+    @OneToOne(mappedBy = "restaurent", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private Cart_Restaurent cart_restaurent;
 
     @PrePersist
     void assignValues() {

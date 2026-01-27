@@ -1,5 +1,10 @@
 package com.foodify.backend_foodify.Entities;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.CascadeType;
 // import jakarta.annotation.Generated;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,6 +14,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -49,4 +55,8 @@ public class Food_Extra{
     @Column(name = "food_extra_price", nullable = false)
     @NotNull
     private Double item_price;
+
+    @OneToMany(mappedBy = "food_extra", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Cart_items_Extra> cart_item_extra;
 }

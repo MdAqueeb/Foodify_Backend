@@ -3,6 +3,8 @@ package com.foodify.backend_foodify.Entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -42,6 +44,7 @@ public class Cart_Item{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cart_restaurent_id", nullable = false)
+    @JsonIgnore
     private Cart_Restaurent cart_restaurent;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -49,7 +52,11 @@ public class Cart_Item{
     private Food food;
 
     @OneToMany(mappedBy = "cart_item", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Cart_items_Extra> cart_item_extra;
+
+    @Column(name = "special_instructions")
+    private String specialInstructions;
 
     @PrePersist
     void assignValues() {

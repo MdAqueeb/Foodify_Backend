@@ -14,27 +14,54 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 @Entity
 @Table(name = "cart_item_extras")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Cart_items_Extra {
-    
+
     @Id
-    @Column(name = "cart_item_extras_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cart_item_extras_id;
-
-    @Column(name = "price", nullable = false)
-    @NotNull
-    private Double totalAmount;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cart_item_id", nullable = false)
     private Cart_Item cart_item;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "extras_id", nullable = false)
-    private Extras extras;
+    @JoinColumn(name = "food_extra_id", nullable = false)
+    private Food_Extra food_extra;
+
+    @Column(name = "price", nullable = false)
+    private Double price;
+
+    
 }
+
+
+// @Entity
+// @Table(name = "cart_item_extras")
+// @Data
+// @NoArgsConstructor
+// @AllArgsConstructor
+// public class Cart_items_Extra {
+    
+//     @Id
+//     @Column(name = "cart_item_extras_id")
+//     @GeneratedValue(strategy = GenerationType.IDENTITY)
+//     private Long cart_item_extras_id;
+
+//     @Column(name = "price", nullable = false)
+//     @NotNull
+//     private Double totalAmount;
+
+//     @ManyToOne(fetch = FetchType.LAZY)
+//     @JoinColumn(name = "cart_item_id", nullable = false)
+//     private Cart_Item cart_item;
+
+//     @ManyToOne(fetch = FetchType.LAZY)
+//     @JoinColumn(name = "extras_id", nullable = false)
+//     private Extras extras;
+// }
