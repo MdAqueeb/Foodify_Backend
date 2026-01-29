@@ -51,9 +51,8 @@ public class User {
     @Column(name = "email", nullable = false, unique = true)
     @NotBlank(message = "email does not empty or null")
     // @UniqueElements(message = "email must be unique")
-    @Pattern(regexp="^[A-Za-z][A-Za-z0-9._%+-]*@gmail\\\\.com$", message = "Email is not valid")
+    // @Pattern(regexp="^[A-Za-z][A-Za-z0-9._%+-]*@gmail\\\\.com$", message = "Email is not valid")
     private String email;
-
     
     @Column(name = "password", nullable = false)
     @NotBlank(message = "password does not empty or null")
@@ -105,12 +104,16 @@ public class User {
 
     @PrePersist
     void defaultValues() {
-        user_address = new ArrayList<>();
-        wishlists = new ArrayList<>();
-        // cart = new ArrayList<>();
-        restaurent = new ArrayList<>();
-        order = new ArrayList<>();
-        payment = new ArrayList<>();
+        if (created_at == null) {
+        created_at = LocalDateTime.now();
+    }
+
+    // Initialize collections if null
+    if (user_address == null) user_address = new ArrayList<>();
+    if (wishlists == null) wishlists = new ArrayList<>();
+    if (restaurent == null) restaurent = new ArrayList<>();
+    if (order == null) order = new ArrayList<>();
+    if (payment == null) payment = new ArrayList<>();
     }
 }
 
