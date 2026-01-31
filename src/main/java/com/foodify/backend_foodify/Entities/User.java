@@ -73,7 +73,7 @@ public class User {
     @Builder.Default
     private LocalDateTime created_at = LocalDateTime.now();
 
-    enum Role{
+    public enum Role{
             owner, 
             customer
     }
