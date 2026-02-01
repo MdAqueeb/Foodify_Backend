@@ -78,7 +78,7 @@ public class Food {
     private Category food_category = Category.veg;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "type", nullable = false)
+    @Column(name = "food_type", nullable = false)
     @Builder.Default
     private FoodType food_type = FoodType.dessert;
 
@@ -96,7 +96,7 @@ public class Food {
     @JsonIgnore
     private Menu menu;
 
-    enum FoodType{
+    public enum FoodType{
         starter, 
         mains, 
         dessert

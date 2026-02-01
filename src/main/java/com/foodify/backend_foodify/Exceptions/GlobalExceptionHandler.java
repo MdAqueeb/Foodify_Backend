@@ -15,4 +15,10 @@ public class GlobalExceptionHandler {
         ApiResponse<Object> response = new ApiResponse<>(false, null, ex.getMessage());
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(ResourceConflictException.class)
+    public ResponseEntity<ApiResponse<Object>> handleResourceConflict(ResourceConflictException ex){
+        ApiResponse<Object> response = new ApiResponse<>(false, null, ex.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+    }
 }
