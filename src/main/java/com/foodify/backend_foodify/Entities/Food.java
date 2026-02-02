@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -43,47 +44,57 @@ public class Food {
 
     @Column(name = "food_name", nullable = false)
     @NotBlank
+    @JsonProperty("food_name")
     private String food_name;
 
     @Column(name = "food_description", nullable = false)
     @NotBlank
+    @JsonProperty("food_description")
     private String food_description;
 
     @Column(name = "price", nullable = false)
     @NotNull
+    @JsonProperty("food_price")
     private Double food_price;
 
     @Column(name = "availability", nullable = false)
     @NotNull
     @Builder.Default
+    @JsonProperty("isAvailable")
     private Boolean isAvailable = true;
 
     @Column(name = "rating", nullable = false)
     @NotNull
     @Builder.Default
+    @JsonProperty("food_rating")
     private Double food_rating = 0.0;
 
     @Column(name = "popularity", nullable = false)
     @NotNull
     @Builder.Default
+    @JsonProperty("food_popularity")
     private Boolean food_popularity = false;
 
     @Column(name = "min_time_taken")
+    @JsonProperty("timeTake")
     private Integer timeTake;
 
 
     @Enumerated(EnumType.STRING)
     @Column(name = "category", nullable = false)
     @Builder.Default
+    @JsonProperty("food_category")
     private Category food_category = Category.veg;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "food_type", nullable = false)
     @Builder.Default
+    @JsonProperty("food_type")
     private FoodType food_type = FoodType.dessert;
 
     @Enumerated(EnumType.STRING)
     @Builder.Default
+    @JsonProperty("foodtime")
     @Column(name = "food_time", nullable = false)
     private FoodTime foodtime = FoodTime.others;
 
@@ -131,5 +142,6 @@ public class Food {
         food_extra = new ArrayList<>();
         cartItems = new ArrayList<>();
         orderItem = new ArrayList<>();
+        created_at = LocalDateTime.now();
     }
 }

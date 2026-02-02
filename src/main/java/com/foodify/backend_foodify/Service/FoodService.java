@@ -131,5 +131,72 @@ public class FoodService {
         fd.setIsAvailable(available);
         return foodRepo.save(fd);
     }
+
+    public Food createFood(Long restaurentId, Long menuId, Food food) {
+        Optional<Restaurent> restaurent = restaurent_repo.findById(restaurentId);
+        if(!restaurent.isPresent()){
+            throw new ResourceNotFoundException("Restaurent Not Found");
+        }
+
+        Optional<Menu> menu = menu_repo.findById(menuId);
+        if(!menu.isPresent()){
+            throw new ResourceNotFoundException("Menu Not Found");
+        }
+
+        if(restaurent.get().getMenu() == null){
+            throw new ResourceConflictException("Given Restaurent Menu is Not there");
+        }
+        else if(!(restaurent.get().getMenu().getMenu_id().equals(menuId))){
+            throw new ResourceConflictException("Restaurent Menu and given Menu Not Match");
+        }
+        
+        food.setMenu(menu.get());
+        return foodRepo.save(food);
+    }
+
+    public Food updateFoodDetails(Long restaurentId, Long menuId, Long foodId, Food foodDetails) {
+        Optional<Restaurent> restaurent = restaurent_repo.findById(restaurentId);
+        if(!restaurent.isPresent()){
+            throw new ResourceNotFoundException("Restaurent Not Found");
+        }
+
+        Optional<Food> food = foodRepo.findById(foodId);
+        if(!food.isPresent()){
+            throw new ResourceNotFoundException("Food Not Found");
+        }
+
+        Optional<Menu> menu = menu_repo.findById(menuId);
+        if(!menu.isPresent()){
+            throw new ResourceNotFoundException("Menu Not Found");
+        }
+
+        if(restaurent.get().getMenu() == null){
+            throw new ResourceConflictException("Given Restaurent Menu is Not there");
+        }
+        else if(!(restaurent.get().getMenu().getMenu_id().equals(menuId))){
+            throw new ResourceConflictException("Restaurent Menu and given Menu Not Match");
+        }
+        if(food.get().getMenu() == null){
+            throw new ResourceConflictException("Food not contain any Menu");
+        }
+        else if(!(food.get().getMenu().getMenu_id().equals(menuId))){
+            throw new ResourceConflictException("Food Menu and given Menu Not Match");
+        }
+
+        Food Food = food.get();
+        Food.setFood_name(foodDetails.getFood_name());
+        Food.setFood_description(foodDetails.getFood_description());
+        Food.setFood_price(foodDetails.getFood_price());
+        Food.setIsAvailable(foodDetails.getIsAvailable());
+        Food.setFood_rating(foodDetails.getFood_rating());
+        Food.setFood_popularity(foodDetails.getFood_popularity());
+        Food.setTimeTake(foodDetails.getTimeTake());
+        Food.setFood_category(foodDetails.getFood_category());
+        Food.setFood_type(foodDetails.getFood_type());
+        Food.setFoodtime(foodDetails.getFoodtime());
+
+        return foodRepo.save(Food);
+    }
     
+
 }
