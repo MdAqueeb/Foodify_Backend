@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -46,8 +48,9 @@ public class Restaurent {
     private String restaurent_picture;
 
     @Column(name = "active_status", nullable = false)
-    @Builder.Default
-    private Boolean isAvailable = true;
+    // @Builder.Default
+    @Enumerated(EnumType.STRING)
+    private Active isAvailable;
 
     @Column(name = "delivary_fee")
     private String restaurent_delivary_fee;
@@ -79,5 +82,12 @@ public class Restaurent {
     @PrePersist
     void assignValues() {
         order = new ArrayList<>();
+        isAvailable = Active.active;
+    }
+
+    public enum Active{
+        pending,
+        active, 
+        closed
     }
 }
