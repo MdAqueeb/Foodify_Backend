@@ -15,19 +15,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
+@RequestMapping("/restaurent")
 public class RestaurentController {
-    
+
     @Autowired
     private RestaurentService restaurentService;
 
-    @GetMapping("/restaurent/{restaurentId}")
-    public ResponseEntity<ApiResponse<Restaurent>> getMethodName(@PathVariable Long restaurentId) {
+    @GetMapping("/{restaurentId}")
+    public ResponseEntity<ApiResponse<Restaurent>> getRestaurent(
+            @PathVariable Long restaurentId) {
+
         Restaurent restaurent = restaurentService.findRestaurent(restaurentId);
+
         ApiResponse<Restaurent> response = new ApiResponse<>();
-        response.setData(restaurent);
-        response.setMessage("Restaurent fetch Successfully");
         response.setSuccess(true);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        response.setMessage("Restaurent fetched successfully");
+        response.setData(restaurent);
+
+        return ResponseEntity.ok(response);
     }
-    
 }

@@ -40,7 +40,7 @@ public class Order {
     @NotNull
     private OrderStatus order_status;
 
-    @Column(name = "cancelled_By", nullable = false)
+    @Column(name = "cancelled_by", nullable = false)
     @NotNull
     @Enumerated(EnumType.STRING)
     private Cancelled_By cancelled_By;
@@ -64,7 +64,7 @@ public class Order {
     @JoinColumn(name = "address_id", nullable = false)
     private User_Address user_address;
 
-    enum OrderStatus{
+    public enum OrderStatus{
         created, 
         pending_payment,
         payment_failed, 
@@ -76,13 +76,13 @@ public class Order {
         cancelled
     }
 
-    enum Cancelled_By{
+    public enum Cancelled_By{
         customer,
         owner
     }
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Order_item> orderItem;
+    private List<Order_item> order_items;
 
     @OneToMany(mappedBy = "order", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     private List<Payment> payment;
@@ -90,7 +90,8 @@ public class Order {
     @PrePersist
     void assign_values(){
         created_at = LocalDateTime.now();
-        orderItem = new ArrayList<>();
+        order_items = new ArrayList<>();
         payment = new ArrayList<>();
     }
 }
+

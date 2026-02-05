@@ -18,18 +18,22 @@ public class RestaurentService {
     private RestaurentRepo restaurentRepo;
 
     public Restaurent findRestaurent(Long restaurentId) {
-        Optional<Restaurent> restaurent = restaurentRepo.findById(restaurentId);
-        if(!restaurent.isPresent()){
-            throw new ResourceNotFoundException("Restaurent Not Found");
-        }
-        Restaurent rst = restaurent.get();
-        if(rst.getIsAvailable().equals(Active.closed)){
-            throw new RestaurentNotActiveException("Restaurent is Closed");
-        }
-        else if(rst.getIsAvailable().equals(Active.pending)){
-            throw new RestaurentNotActiveException("Restaurent is Not Open yet");
-        }
-        return rst;
+
+    Restaurent rst = restaurentRepo.findById(restaurentId)
+            .orElseThrow(() -> 
+                new ResourceNotFoundException("Restaurent Not Found")
+            );
+
+    if (rst.getIsAvailable() == Active.closed) {
+        throw new RestaurentNotActiveException("Restaurent is Closed");
     }
+
+    if (rst.getIsAvailable() == Active.pending) {
+        throw new RestaurentNotActiveException("Restaurent is Not Open yet");
+    }
+
+    return rst;
+}
+
     
 }

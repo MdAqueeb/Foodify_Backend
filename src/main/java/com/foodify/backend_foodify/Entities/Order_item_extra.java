@@ -31,9 +31,4 @@ public class Order_item_extra {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_item_id", nullable = false)
     private Order_item order_item;
-
-    // @ManyToOne(fetch = FetchType.LAZY)
-    // @JoinColumn(name = "extras_id", nullable = false)
-    // private Extras extras;
-
 }

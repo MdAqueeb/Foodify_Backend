@@ -99,5 +99,25 @@ public class CartService {
 
         return cart;
     }
+// Get cart by user
+    public Cart getCartByUser(Long userId) {
+
+    User user = userRepo.findById(userId)
+            .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+    return user.getCart();
+}
+//Clear cart
+public void clearCart(Long userId) {
+
+    User user = userRepo.findById(userId)
+            .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+    Cart cart = user.getCart();
+    if (cart != null) {
+        cartRepo.delete(cart);
+    }
+}
+
 }
 

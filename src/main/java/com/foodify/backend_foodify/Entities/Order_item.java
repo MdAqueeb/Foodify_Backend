@@ -34,7 +34,7 @@ public class Order_item {
     @NotNull
     private Integer quantity;
 
-    @Column(name = "pirce", nullable = false)
+    @Column(name = "item_price", nullable = false)
     @NotNull
     private Double item_price;
 
@@ -47,5 +47,5 @@ public class Order_item {
     private Order order;
 
     @OneToMany(mappedBy = "order_item", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Order_item_extra> order_item_extra;
+    private List<Order_item_extra> order_item_extras;
 }

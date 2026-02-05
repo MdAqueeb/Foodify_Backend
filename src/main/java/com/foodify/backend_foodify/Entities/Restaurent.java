@@ -52,11 +52,12 @@ public class Restaurent {
     @Enumerated(EnumType.STRING)
     private Active isAvailable;
 
-    @Column(name = "delivary_fee")
-    private String restaurent_delivary_fee;
+@Column(name = "delivary_fee")
+private Double restaurent_delivary_fee;
 
-    @Column(name = "service_fee")
-    private String restaurent_service_fee;
+@Column(name = "service_fee")
+private Double restaurent_service_fee;
+
 
     @Column(name = "popular", nullable = false)
     @Builder.Default
@@ -75,19 +76,24 @@ public class Restaurent {
     @JsonIgnore
     private List<Order> order;
 
-    @OneToOne(mappedBy = "restaurent", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
-    private Cart_Restaurent cart_restaurent;
+@OneToMany(mappedBy = "restaurent", cascade = CascadeType.ALL)
+@JsonIgnore
+private List<Cart_Restaurent> cart_restaurents;
 
-    @PrePersist
-    void assignValues() {
-        order = new ArrayList<>();
-        isAvailable = Active.active;
-    }
+
+  @PrePersist
+void assignValues() {
+    order = new ArrayList<>();
+    cart_restaurents = new ArrayList<>();
+    isAvailable = Active.active;
+}
+
 
     public enum Active{
         pending,
         active, 
         closed
     }
+
+    
 }
