@@ -1,5 +1,13 @@
  package com.foodify.backend_foodify.Service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.foodify.backend_foodify.Entities.Cart_Item;
+import com.foodify.backend_foodify.Exceptions.ResourceNotFoundException;
+import com.foodify.backend_foodify.Repository.CartItemRepo;
+import com.foodify.backend_foodify.Repository.CartRepo;
+
 // import org.springframework.stereotype.Service;
 
 // @Service
@@ -7,7 +15,7 @@
     
 // }
 @Service
-public class CartItemService {
+public class CartItemExtrasService {
 
     @Autowired private CartItemRepo cartItemRepo;
     @Autowired private CartRepo cartRepo;

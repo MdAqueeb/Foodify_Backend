@@ -1,6 +1,10 @@
 package com.foodify.backend_foodify.Service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.foodify.backend_foodify.Entities.Order_item_extra;
+import com.foodify.backend_foodify.Repository.Order_Item_Extra_Repo;
 
 @Service
 public class Order_Item_Extra_Service {

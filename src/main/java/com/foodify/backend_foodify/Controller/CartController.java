@@ -1,12 +1,21 @@
 package com.foodify.backend_foodify.Controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import com.foodify.backend_foodify.DTO.AddToCartDTO;
+import com.foodify.backend_foodify.DTO.ApiResponse;
+import com.foodify.backend_foodify.Entities.Cart;
+import com.foodify.backend_foodify.Service.CartService;
+
 @RestController
-@RequestMapping("user/{userId}/cart")
+@RequestMapping("/user/{userId}/cart")
 public class CartController {
 
     @Autowired
     private CartService cartService;
 
-    // ADD TO CART (already working)
     @PostMapping
     public ResponseEntity<ApiResponse<Cart>> addToCart(
             @PathVariable Long userId,
@@ -15,11 +24,10 @@ public class CartController {
         Cart cart = cartService.addToCart(userId, dto);
 
         return ResponseEntity.ok(
-            new ApiResponse<>(true, "Added To Cart", cart)
+                new ApiResponse<>(true, cart, "Added to cart")
         );
     }
 
-    // GET CART (load cart page)
     @GetMapping
     public ResponseEntity<ApiResponse<Cart>> getCart(
             @PathVariable Long userId) {
@@ -27,11 +35,10 @@ public class CartController {
         Cart cart = cartService.getCartByUser(userId);
 
         return ResponseEntity.ok(
-            new ApiResponse<>(true, "Cart fetched", cart)
+                new ApiResponse<>(true, cart, "Cart fetched")
         );
     }
 
-    // CLEAR CART
     @DeleteMapping
     public ResponseEntity<ApiResponse<String>> clearCart(
             @PathVariable Long userId) {
@@ -39,7 +46,7 @@ public class CartController {
         cartService.clearCart(userId);
 
         return ResponseEntity.ok(
-            new ApiResponse<>(true, "Cart cleared", null)
+                new ApiResponse<>(true, "Cart cleared", null)
         );
     }
 }

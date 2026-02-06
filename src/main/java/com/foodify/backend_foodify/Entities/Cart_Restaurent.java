@@ -24,24 +24,25 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
-@Data
-@Builder
 @Entity
 @Table(name = "cart_restaurent")
+@Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Cart_Restaurent {
+
     @Id
-    @Column(name = "cart_restaurent_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long cart_restaurent_id;
+    @Column(name = "cart_restaurent_id")
+    private Long cartRestaurentId;
 
     @Column(name = "total_amount", nullable = false)
-    private Double total_amount;
+    private Double totalAmount;
 
     @Column(name = "total_items", nullable = false)
     @Builder.Default
-    private Integer total_items = 0;
+    private Integer totalItems = 0;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
@@ -52,14 +53,11 @@ public class Cart_Restaurent {
     @JsonIgnore
     private Cart cart;
 
-    @OneToMany(mappedBy = "cart_restaurent", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(
+        mappedBy = "cartRestaurent",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
     @Builder.Default
-    
-    private List<Cart_Item> cart_Items = new ArrayList<>();
-
-
-    // @PrePersist
-    // void assignValues() {
-    //     cart_Items = new ArrayList<>();
-    // }
+    private List<Cart_Item> cartItems = new ArrayList<>();
 }

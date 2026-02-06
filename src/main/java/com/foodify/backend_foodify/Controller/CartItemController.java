@@ -1,12 +1,19 @@
 package com.foodify.backend_foodify.Controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import com.foodify.backend_foodify.DTO.ApiResponse;
+import com.foodify.backend_foodify.Service.CartItemService;
+
 @RestController
-@RequestMapping("user/{userId}/cart/item")
+@RequestMapping("/user/{userId}/cart/item")
 public class CartItemController {
 
     @Autowired
     private CartItemService cartItemService;
 
-    // UPDATE QUANTITY (+ / -)
     @PutMapping("/{cartItemId}")
     public ResponseEntity<ApiResponse<String>> updateQuantity(
             @PathVariable Long userId,
@@ -16,11 +23,10 @@ public class CartItemController {
         cartItemService.updateQuantity(userId, cartItemId, quantity);
 
         return ResponseEntity.ok(
-            new ApiResponse<>(true, "Quantity updated", null)
+                new ApiResponse<>(true, "Quantity updated", null)
         );
     }
 
-    // REMOVE ITEM
     @DeleteMapping("/{cartItemId}")
     public ResponseEntity<ApiResponse<String>> removeItem(
             @PathVariable Long userId,
@@ -29,7 +35,7 @@ public class CartItemController {
         cartItemService.removeItem(userId, cartItemId);
 
         return ResponseEntity.ok(
-            new ApiResponse<>(true, "Item removed", null)
+                new ApiResponse<>(true, "Item removed", null)
         );
     }
 }

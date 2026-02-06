@@ -43,7 +43,7 @@ public class Wishlist_item {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime created_at;
 
-    enum Item_type{
+    public enum Item_type{
         food, 
         restaurent
     }

@@ -14,23 +14,17 @@ public class CartRestaurentService {
     @Autowired
     private CartRestaurentRepo cartRestRepo;
 
-    public Cart_Restaurent getOrCreate(
-            Cart cart,
-            Restaurent restaurent
-    ) {
+    public Cart_Restaurent getOrCreate(Cart cart, Restaurent restaurent) {
+
         return cartRestRepo
-                .findByCart_Cart_idAndRestaurent_Restaurant_id(
-                        cart.getCart_id(),
-                        restaurent.getRestaurant_id()
-                )
+                .findByCartAndRestaurent(cart, restaurent)
                 .orElseGet(() -> {
                     Cart_Restaurent cr = new Cart_Restaurent();
                     cr.setCart(cart);
                     cr.setRestaurent(restaurent);
-                    cr.setTotal_amount(0.0);
-                    cr.setTotal_items(0);
+                    cr.setTotalAmount(0.0);
+                    cr.setTotalItems(0);
                     return cartRestRepo.save(cr);
                 });
     }
 }
-

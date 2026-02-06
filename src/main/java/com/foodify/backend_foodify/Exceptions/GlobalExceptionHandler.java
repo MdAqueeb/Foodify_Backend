@@ -11,14 +11,34 @@ import com.foodify.backend_foodify.DTO.ApiResponse;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ApiResponse<Object>> handleResourceNotFound(ResourceNotFoundException ex){
-        ApiResponse<Object> response = new ApiResponse<>(false, null, ex.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    public ResponseEntity<ApiResponse<Object>> handleResourceNotFound(ResourceNotFoundException ex) {
+        return new ResponseEntity<>(
+                new ApiResponse<>(false, null, ex.getMessage()),
+                HttpStatus.NOT_FOUND
+        );
     }
 
     @ExceptionHandler(RestaurentNotActiveException.class)
-    public ResponseEntity<ApiResponse<Object>> handleRestaurentNotActive(RestaurentNotActiveException ex){
-        ApiResponse<Object> response = new ApiResponse<>(false, null, ex.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<ApiResponse<Object>> handleRestaurentNotActive(RestaurentNotActiveException ex) {
+        return new ResponseEntity<>(
+                new ApiResponse<>(false, null, ex.getMessage()),
+                HttpStatus.BAD_REQUEST
+        );
+    }
+
+    @ExceptionHandler(AlreadyExiestException.class)
+    public ResponseEntity<ApiResponse<Object>> handleAlreadyExist(AlreadyExiestException ex) {
+        return new ResponseEntity<>(
+                new ApiResponse<>(false, null, ex.getMessage()),
+                HttpStatus.CONFLICT
+        );
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ApiResponse<Object>> handleGlobalException(Exception ex) {
+        return new ResponseEntity<>(
+                new ApiResponse<>(false, null, "Internal server error"),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
     }
 }

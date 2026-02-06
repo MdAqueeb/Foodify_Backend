@@ -3,41 +3,40 @@ package com.foodify.backend_foodify.Controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-// import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.foodify.backend_foodify.DTO.ApiResponse;
 import com.foodify.backend_foodify.Entities.Food;
 import com.foodify.backend_foodify.Service.FoodService;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-
 @RestController
-@RequestMapping("restaurent/{restaurentid}/food")
+@RequestMapping("/restaurent/{restaurentid}/food")
 public class FoodController {
-    // get specific food
 
     @Autowired
     private FoodService foodService;
 
-    @GetMapping("/{food_id}")
-    public ResponseEntity<ApiResponse<Food>> getSpecificFood(@PathVariable Long food_id, @PathVariable Long restaurentid) throws Exception{
-        Food food = foodService.getFoodbyId(food_id, restaurentid);
-        ApiResponse<Food> response = new ApiResponse<>(true, food, "Food fetch successfull");
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    @GetMapping("/{foodId}")
+    public ResponseEntity<ApiResponse<Food>> getFood(
+            @PathVariable Long restaurentid,
+            @PathVariable Long foodId) {
+
+        Food food = foodService.getFoodbyId(foodId, restaurentid);
+
+        return ResponseEntity.ok(
+                new ApiResponse<>(true, food, "Food fetched successfully")
+        );
     }
 
-    // specific restaurent food items
-    @GetMapping()
-    public ResponseEntity<ApiResponse<List<Food>>> getRestaurentFoods(@PathVariable Long restaurentid){
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<Food>>> getFoods(
+            @PathVariable Long restaurentid) {
+
         List<Food> foods = foodService.getFoodByRestaurent(restaurentid);
-        ApiResponse<List<Food>> response = new ApiResponse<>(true, foods, "List of food fetch successfull");
-        return new ResponseEntity<>(response, HttpStatus.OK);
+
+        return ResponseEntity.ok(
+                new ApiResponse<>(true, foods, "Food list fetched")
+        );
     }
 }
