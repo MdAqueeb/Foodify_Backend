@@ -21,4 +21,22 @@ public class GlobalExceptionHandler {
         ApiResponse<Object> response = new ApiResponse<>(false, null, ex.getMessage());
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
+
+    @ExceptionHandler(InvalidPasswordException.class)
+    public ResponseEntity<ApiResponse<Object>> handleInvalidPasswordException(InvalidPasswordException ex){
+        ApiResponse<Object> response = new ApiResponse<>(false, null, ex.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(PasswordMismatchException.class)
+    public ResponseEntity<ApiResponse<Object>> handlePasswordMismatchException(PasswordMismatchException ex){
+        ApiResponse<Object> response = new ApiResponse<>(false, null, ex.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(RestaurentNotActiveException.class)
+    public ResponseEntity<ApiResponse<Object>> handleRestaurentNotActive(RestaurentNotActiveException ex){
+        ApiResponse<Object> response = new ApiResponse<>(false, null, ex.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
 }

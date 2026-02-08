@@ -71,22 +71,24 @@ public class Restaurent {
     private User user;
 
     @OneToOne(mappedBy = "restaurent", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
+    // @JsonIgnore
     private Menu menu;
 
     @OneToMany(mappedBy = "restaurent", cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
     @JsonIgnore
     private List<Order> order;
 
-    @OneToOne(mappedBy = "restaurent", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "restaurent", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JsonIgnore
-    private Cart_Restaurent cart_restaurent;
+    private List<Cart_Restaurent> cart_restaurents ;
+
 
     @PrePersist
     void assignValues() {
         order = new ArrayList<>();
         isAvailable = Status.active;
         isPopular = false;
+        cart_restaurents =  new ArrayList<>();
     }
 
     public enum Status{

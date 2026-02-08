@@ -55,11 +55,15 @@ public class Cart_Item{
     @JsonIgnore
     private List<Cart_items_Extra> cart_item_extra;
 
+    @OneToMany(mappedBy = "cart_Item", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.PERSIST})
+    private List<Order_item> order_items;
+
     @Column(name = "special_instructions")
     private String specialInstructions;
 
     @PrePersist
     void assignValues() {
         cart_item_extra = new ArrayList<>();
+        order_items = new ArrayList<>();
     }
 }

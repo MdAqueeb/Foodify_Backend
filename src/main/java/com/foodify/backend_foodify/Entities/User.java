@@ -27,6 +27,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Table(name = "users")
@@ -34,6 +35,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(exclude = "cart")
+
 public class User {
     
     @Id
@@ -51,7 +54,7 @@ public class User {
     @Column(name = "email", nullable = false, unique = true)
     @NotBlank(message = "email does not empty or null")
     // @UniqueElements(message = "email must be unique")
-    @Pattern(regexp="^[A-Za-z][A-Za-z0-9._%+-]*@gmail\\\\.com$", message = "Email is not valid")
+    // @Pattern(regexp="^[A-Za-z][A-Za-z0-9._%+-]*@gmail\\\\.com$", message = "Email is not valid")
     private String email;
 
     
@@ -111,6 +114,7 @@ public class User {
         restaurent = new ArrayList<>();
         order = new ArrayList<>();
         payment = new ArrayList<>();
+        created_at = LocalDateTime.now();
     }
 }
 

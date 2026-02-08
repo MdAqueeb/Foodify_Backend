@@ -113,13 +113,13 @@ public class Food {
         dessert
     }
 
-    enum Category{
+    public enum Category{
         veg, 
         non_veg, 
         gluten_free
     }
 
-    enum FoodTime{
+    public enum FoodTime{
         breakfast, 
         lunch, 
         dinner, 
@@ -133,15 +133,15 @@ public class Food {
     @JsonIgnore
     private List<Cart_Item> cartItems;
 
-    @OneToMany(mappedBy = "food", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
-    private List<Order_item> orderItem;
+    // @OneToMany(mappedBy = "food", cascade = CascadeType.ALL, orphanRemoval = true)
+    // @JsonIgnore
+    // private List<Order_item> orderItem;
 
     @PrePersist
     void assignValues() {
         food_extra = new ArrayList<>();
         cartItems = new ArrayList<>();
-        orderItem = new ArrayList<>();
+        // orderItem = new ArrayList<>();
         created_at = LocalDateTime.now();
     }
 }

@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,6 +32,12 @@ public class Order_item_extra {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_item_id", nullable = false)
     private Order_item order_item;
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "food_extra_id", nullable = false)
+    private Food_Extra food_extra;
+
 
     // @ManyToOne(fetch = FetchType.LAZY)
     // @JoinColumn(name = "extras_id", nullable = false)

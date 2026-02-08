@@ -36,6 +36,7 @@ public class Menu {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false, unique = true)
+    @JsonIgnore
     private Restaurent restaurent;
 
     @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL, orphanRemoval = true)

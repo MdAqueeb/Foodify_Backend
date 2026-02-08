@@ -29,8 +29,8 @@ public class RestaurentController {
     private RestaurentService rst_service;
 
     @GetMapping("/restaurents")
-    public ResponseEntity<ApiResponse<Page<Restaurent>>> getRestaurentsByStatus(@RequestParam String status, @RequestParam int page, @RequestParam int size) {
-        Page<Restaurent> rsts = rst_service.getRestaurentsByStatus(status, page, size);
+    public ResponseEntity<ApiResponse<Page<Restaurent>>> getRestaurentsByStatus(@RequestParam String status, @RequestParam int page, @RequestParam int size, @RequestParam String sort) {
+        Page<Restaurent> rsts = rst_service.getRestaurentsByStatus(status, page, size, sort);
         ApiResponse<Page<Restaurent>> response = new ApiResponse<>();
         response.setData(rsts);
         response.setMessage("All restaurtent fetch by using status");
@@ -49,5 +49,18 @@ public class RestaurentController {
         
     }
     
+    @GetMapping("/restaurent/{restaurentId}")
+    public ResponseEntity<ApiResponse<Restaurent>> getMethodName(@PathVariable Long restaurentId) {
+        Restaurent restaurent = rst_service.findRestaurent(restaurentId);
+        ApiResponse<Restaurent> response = new ApiResponse<>();
+        response.setData(restaurent);
+        response.setMessage("Restaurent fetch Successfully");
+        response.setSuccess(true);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    
+
+
     
 }

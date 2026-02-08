@@ -1,18 +1,22 @@
 package com.foodify.backend_foodify.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.foodify.backend_foodify.DTO.FoodWithRestaurentDTO;
 import com.foodify.backend_foodify.Entities.Food;
 import com.foodify.backend_foodify.Entities.Menu;
 import com.foodify.backend_foodify.Entities.Restaurent;
+import com.foodify.backend_foodify.Entities.Food.Category;
 import com.foodify.backend_foodify.Entities.Food.FoodType;
 import com.foodify.backend_foodify.Exceptions.ResourceConflictException;
 import com.foodify.backend_foodify.Exceptions.ResourceNotFoundException;
@@ -196,6 +200,86 @@ public class FoodService {
         Food.setFoodtime(foodDetails.getFoodtime());
 
         return foodRepo.save(Food);
+    }
+
+    public Page<Food> getPopularFoods(Long restaurentId, Long menuId, Boolean popular, int page, int size) {
+        Optional<Restaurent> restaurent = restaurent_repo.findById(restaurentId);
+        if(!restaurent.isPresent()){
+            throw new ResourceNotFoundException("Restaurent Not Found");
+        }
+
+        
+
+        Optional<Menu> menu = menu_repo.findById(menuId);
+        if(!menu.isPresent()){
+            throw new ResourceNotFoundException("Menu Not Found");
+        }
+
+        if(restaurent.get().getMenu() == null){
+            throw new ResourceNotFoundException("The Restaurent Menu is Not There");
+        }
+        else if(!(restaurent.get().getMenu().getMenu_id().equals(menuId)) ){
+            throw new ResourceConflictException("Restaurent Menu and given menu not Match");
+        }
+
+        Pageable pge = PageRequest.of(page, size);
+        Page<Food> foods;
+        if(popular == null || popular == false){
+            foods = foodRepo.findByRestaurentMenuFoods(menuId, pge);
+        }
+        else{
+            foods = foodRepo.findByRestaurentMenu(menuId, popular, pge);
+        }
+        
+        return foods;
+    }
+
+    public Page<Food> getCategoryFoods(Long restaurentId, Long menuId, String food_category, int page, int size) {
+        Optional<Restaurent> restaurent = restaurent_repo.findById(restaurentId);
+        if(!restaurent.isPresent()){
+            throw new ResourceNotFoundException("Restaurent Not Found");
+        }
+
+        Optional<Menu> menu = menu_repo.findById(menuId);
+        if(!menu.isPresent()){
+            throw new ResourceNotFoundException("Menu Not Found");
+        }
+
+        if(restaurent.get().getMenu() == null){
+            throw new ResourceNotFoundException("The Restaurent Menu is Not There");
+        }
+        else if(!(restaurent.get().getMenu().getMenu_id().equals(menuId)) ){
+            throw new ResourceConflictException("Restaurent Menu and given menu not Match");
+        }
+
+        if(!(Category.gluten_free.name().equals(food_category) || Category.non_veg.name().equals(food_category)
+            || Category.veg.name().equals(food_category))){
+            throw new ResourceConflictException("food_category not found");
+        }
+
+        Pageable pge = PageRequest.of(page, size);
+        return foodRepo.findByRestaurentMenuCategory(food_category, menuId, pge);
+    }
+
+    public Page<FoodWithRestaurentDTO> getFoodBySearch(String search, int page, int size) {
+        Pageable pge = PageRequest.of(page, size);
+        Page<Food> food = foodRepo.getSearchItems(search, pge);
+        List<FoodWithRestaurentDTO> dtoList = food.getContent().stream().map(fd -> {
+        Restaurent rst = fd.getMenu().getRestaurent(); // fetch restaurant
+        return new FoodWithRestaurentDTO(
+            fd.getFood_id(),
+            fd.getFood_name(),
+            fd.getFood_description(),
+            fd.getFood_price(),
+            fd.getTimeTake(),
+            fd.getFood_popularity(),
+            // fd.getPicture(),
+            rst.getRestaurant_id(),
+            rst.getRestaurent_name()
+        );
+    }).collect(Collectors.toList());
+
+    return new PageImpl<>(dtoList, pge, food.getTotalElements());
     }
     
 

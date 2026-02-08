@@ -40,8 +40,8 @@ public class Order {
     @NotNull
     private OrderStatus order_status;
 
-    @Column(name = "cancelled_By", nullable = false)
-    @NotNull
+    @Column(name = "cancelled_By")
+    // @NotNull
     @Enumerated(EnumType.STRING)
     private Cancelled_By cancelled_By;
 
@@ -64,21 +64,31 @@ public class Order {
     @JoinColumn(name = "address_id", nullable = false)
     private User_Address user_address;
 
-    enum OrderStatus{
+    @Enumerated(EnumType.STRING)
+    @Column(name = "order_payment", nullable = false)
+    private PaymentStatus order_payment;
+
+    public enum OrderStatus{
+
+        // created, cooking, on the way, deliverd,         cancelled
+        // confirm, accept, asign to driver, mark pickup, 
         created, 
-        pending_payment,
-        payment_failed, 
-        accepted, 
-        preparing, 
-        ready,
-        on_the_way,
-        delivered, 
+        cooking, 
+        on_the_way, 
+        deliverd,
         cancelled
     }
 
-    enum Cancelled_By{
+    public enum PaymentStatus{
+        pending_payment,
+        payment_success,
+        payment_failed
+    }
+
+    public enum Cancelled_By{
+        not_cancel,
         customer,
-        owner
+        owner, 
     }
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -92,5 +102,8 @@ public class Order {
         created_at = LocalDateTime.now();
         orderItem = new ArrayList<>();
         payment = new ArrayList<>();
+        cancelled_By = Cancelled_By.not_cancel;
+        order_status = OrderStatus.created;
+        order_payment = PaymentStatus.pending_payment;
     }
 }

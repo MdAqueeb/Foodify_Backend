@@ -43,18 +43,17 @@ public class Cart_Restaurent {
     @Builder.Default
     private Integer total_items = 0;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
     private Restaurent restaurent;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cart_id", nullable = false)
-    @JsonIgnore
+    // @JsonIgnore
     private Cart cart;
 
     @OneToMany(mappedBy = "cart_restaurent", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
-    
     private List<Cart_Item> cart_Items = new ArrayList<>();
 
 

@@ -59,4 +59,8 @@ public class Food_Extra{
     @OneToMany(mappedBy = "food_extra", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Cart_items_Extra> cart_item_extra;
+
+    @OneToMany(mappedBy = "food_extra", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Order_item_extra> order_item_extra;
 }

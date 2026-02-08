@@ -13,7 +13,9 @@ import com.foodify.backend_foodify.Entities.Restaurent;
 import com.foodify.backend_foodify.Entities.Restaurent.Status;
 import com.foodify.backend_foodify.Entities.User.Role;
 import com.foodify.backend_foodify.Entities.User;
+import com.foodify.backend_foodify.Exceptions.ResourceConflictException;
 import com.foodify.backend_foodify.Exceptions.ResourceNotFoundException;
+import com.foodify.backend_foodify.Exceptions.RestaurentNotActiveException;
 import com.foodify.backend_foodify.Repository.RestaurentRepo;
 import com.foodify.backend_foodify.Repository.UserRepo;
 
@@ -26,10 +28,20 @@ public class RestaurentService {
     @Autowired
     private UserRepo usr_repo;
 
-    public Page<Restaurent> getRestaurentsByStatus(String status, int page, int size) {
+    public Page<Restaurent> getRestaurentsByStatus(String status, int page, int size, String sort) {
         PageRequest pageable = PageRequest.of(page, size);
+        
         if((status.equals(Status.active.name())) || (status.equals(Status.closed.name())) || (status.equals(Status.pending.name()))){
-            Page<Restaurent> restaurentPage = rst_repo.findByRestaurentStatus(status, pageable);
+            Page<Restaurent> restaurentPage;
+            if(sort.equalsIgnoreCase("popular")){
+                restaurentPage = rst_repo.findByRestaurentStatusPopular(status, pageable);
+            }
+            else if(sort.equalsIgnoreCase("recommended")){
+                restaurentPage = rst_repo.findByRestaurentStatus(status, pageable);
+            }
+            else{
+                throw new ResourceConflictException("Given sort not found");
+            }
             return restaurentPage;
         }
         else{
@@ -48,6 +60,21 @@ public class RestaurentService {
         restaurent.setUser(usr.get());
 
         return rst_repo.save(restaurent);
+    }
+
+    public Restaurent findRestaurent(Long restaurentId) {
+        Optional<Restaurent> restaurent = rst_repo.findById(restaurentId);
+        if(!restaurent.isPresent()){
+            throw new ResourceNotFoundException("Restaurent Not Found");
+        }
+        Restaurent rst = restaurent.get();
+        if(rst.getIsAvailable().equals(Status.closed)){
+            throw new RestaurentNotActiveException("Restaurent is Closed");
+        }
+        else if(rst.getIsAvailable().equals(Status.pending)){
+            throw new RestaurentNotActiveException("Restaurent is Not Open yet");
+        }
+        return rst;
     }
     
 }

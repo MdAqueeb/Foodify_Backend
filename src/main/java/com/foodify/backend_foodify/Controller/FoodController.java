@@ -12,6 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.foodify.backend_foodify.DTO.ApiResponse;
+import com.foodify.backend_foodify.DTO.FoodWithRestaurentDTO;
 import com.foodify.backend_foodify.Entities.Food;
 import com.foodify.backend_foodify.Service.FoodService;
 
@@ -51,7 +52,7 @@ public class FoodController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("restaurent/{restaurentId}/Menu/{menuId}")
+    @GetMapping( value = "restaurent/{restaurentId}/Menu/{menuId}", params = "type")
     // add param food category
     public ResponseEntity<ApiResponse<Page<Food>>> getMethodName(@PathVariable Long restaurentId, @PathVariable Long menuId, @RequestParam String type, @RequestParam int page,@DefaultValue(value = "6") @RequestParam int size) {
         Page<Food> foods = foodService.getFoodByRestaurent_Menu(restaurentId, menuId, type, page, size);
@@ -90,5 +91,39 @@ public class FoodController {
         response.setMessage("Food Details Updated");
         response.setSuccess(true);
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+    }
+
+    // get restauretns foods only popular 
+    @GetMapping(value = "restaurent/{restaurentId}/Menu/{menuId}", params = "popular")
+    public ResponseEntity<ApiResponse<Page<Food>>> getRestaurentPopularFoods(@PathVariable Long restaurentId, @PathVariable Long menuId, @RequestParam Boolean popular, @RequestParam int page,@DefaultValue(value = "6") @RequestParam int size ){
+        Page<Food> foods = foodService.getPopularFoods(restaurentId, menuId, popular, page, size);
+        ApiResponse<Page<Food>> response = new ApiResponse<>();
+        response.setData(foods);
+        response.setMessage("All Food fetch successfull");
+        response.setSuccess(true);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    // get restaurents foods only veg item or non-veg or gluten-free
+    @GetMapping(value = "restaurent/{restaurentId}/Menu/{menuId}", params = "food_category")
+    public ResponseEntity<ApiResponse<Page<Food>>> getRestaurentCategoryFoods(@PathVariable Long restaurentId, @PathVariable Long menuId, @RequestParam String food_category, @RequestParam int page,@DefaultValue(value = "6") @RequestParam int size ){
+        Page<Food> foods = foodService.getCategoryFoods(restaurentId, menuId, food_category, page, size);
+        ApiResponse<Page<Food>> response = new ApiResponse<>();
+        response.setData(foods);
+        response.setMessage("All Food category fetch successfull");
+        response.setSuccess(true);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    // get food by search filter
+    @GetMapping("foods")
+    public ResponseEntity<ApiResponse<Page<FoodWithRestaurentDTO>>> getSearchFood(@RequestParam String search, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "6") int size){
+        Page<FoodWithRestaurentDTO> foods = foodService.getFoodBySearch(search, page, size);
+        ApiResponse<Page<FoodWithRestaurentDTO>> response = new ApiResponse<>();
+
+        response.setData(foods);
+        response.setMessage("All Search food fetch successfully");
+        response.setSuccess(true);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

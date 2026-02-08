@@ -17,6 +17,7 @@ public class AddToCartDTO {
     private Long foodId;
     private Integer quantity;
     private String specialInstructions;
+    private Long restaurentId;
     @Builder.Default
     private List<Long> addons = new ArrayList<>();
 
