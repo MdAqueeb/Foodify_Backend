@@ -50,5 +50,12 @@ public interface FoodRepo extends JpaRepository<Food, Long>{
         nativeQuery = true
     )
     Page<Food> getSearchItems(@Param("search") String search, Pageable pge);
+
+    @Query(
+        value = "SELECT * FROM foods WHERE menu_id = :menuId", 
+        countQuery = "SELECT COUNT(*) FROM foods WHERE menu_id = :menuId",
+        nativeQuery = true
+    )
+    Page<Food> findByrestaurentMenu(Long menuId, Pageable pge);
     
 }

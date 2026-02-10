@@ -54,7 +54,7 @@ public class FoodController {
 
     @GetMapping( value = "restaurent/{restaurentId}/Menu/{menuId}", params = "type")
     // add param food category
-    public ResponseEntity<ApiResponse<Page<Food>>> getMethodName(@PathVariable Long restaurentId, @PathVariable Long menuId, @RequestParam String type, @RequestParam int page,@DefaultValue(value = "6") @RequestParam int size) {
+    public ResponseEntity<ApiResponse<Page<Food>>> getMethodName(@PathVariable Long restaurentId, @PathVariable Long menuId, @RequestParam String type, @RequestParam int page, @RequestParam(defaultValue = "6") int size) {
         Page<Food> foods = foodService.getFoodByRestaurent_Menu(restaurentId, menuId, type, page, size);
         ApiResponse<Page<Food>> response = new ApiResponse<>();
         response.setData(foods);

@@ -1,5 +1,7 @@
 package com.foodify.backend_foodify.Service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -9,6 +11,7 @@ import com.foodify.backend_foodify.DTO.LoginData;
 import com.foodify.backend_foodify.Entities.User;
 import com.foodify.backend_foodify.Exceptions.InvalidPasswordException;
 import com.foodify.backend_foodify.Exceptions.PasswordMismatchException;
+import com.foodify.backend_foodify.Exceptions.ResourceConflictException;
 import com.foodify.backend_foodify.Exceptions.ResourceNotFoundException;
 import com.foodify.backend_foodify.Repository.UserRepo;
 
@@ -22,6 +25,10 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
     public User createNewUser(User user) {
+        User usr = usrRepo.findByEmail(user.getEmail());
+        if(usr != null){
+            throw new ResourceConflictException("User Already found");
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return usrRepo.save(user);
     }
@@ -51,6 +58,14 @@ public class UserService {
         }
         usr.setPassword(passwordEncoder.encode(forgotdata.getPassword()));
         return usrRepo.save(usr);
+    }
+
+    public User getUserById(Long userid) {
+        Optional<User> usr = usrRepo.findById(userid);
+        if(!usr.isPresent()){
+            throw new ResourceNotFoundException("User Not Found");
+        }
+        return usr.get();
     }
     
 }

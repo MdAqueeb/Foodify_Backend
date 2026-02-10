@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
@@ -72,4 +73,13 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     } 
     
+    @GetMapping("/{userid}")
+    public ResponseEntity<ApiResponse<User>> getUser(@PathVariable Long userid){
+        User usr = usrService.getUserById(userid);
+        ApiResponse<User> response = new ApiResponse<>();
+        response.setData(usr);
+        response.setMessage("User data fetch successfull");
+        response.setSuccess(true);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }

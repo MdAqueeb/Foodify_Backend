@@ -91,11 +91,14 @@ public class FoodService {
         else if(!(restaurent.get().getMenu().getMenu_id().equals(menuId)) ){
             throw new ResourceConflictException("Restaurent Menu and given menu not Match");
         }
-        else if(!((type.equals(FoodType.dessert.name()) || type.equals(FoodType.mains.name()) || type.equals(FoodType.starter.name())))){
+        else if(!((type.equalsIgnoreCase(FoodType.dessert.name()) || type.equalsIgnoreCase(FoodType.mains.name()) || type.equalsIgnoreCase("All") || type.equalsIgnoreCase(FoodType.starter.name())))){
             throw new ResourceNotFoundException("The given type Not Found");
         }
 
         Pageable pge = PageRequest.of(page, size);
+        if(type.equalsIgnoreCase("All")){
+            return foodRepo.findByrestaurentMenu(menuId, pge);
+        }
 
         return foodRepo.findByRestaurentMenu(type, menuId, pge);
     }
