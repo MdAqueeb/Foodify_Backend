@@ -24,6 +24,8 @@ import com.foodify.backend_foodify.Repository.FoodRepo;
 import com.foodify.backend_foodify.Repository.MenuRepo;
 import com.foodify.backend_foodify.Repository.RestaurentRepo;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class FoodService {
 
@@ -284,6 +286,100 @@ public class FoodService {
 
     return new PageImpl<>(dtoList, pge, food.getTotalElements());
     }
-    
 
+    @Transactional
+    public Food deleteFood(Long restaurentId, Long menuId, Long foodId) {
+        Optional<Restaurent> restaurent = restaurent_repo.findById(restaurentId);
+        if(!restaurent.isPresent()){
+            throw new ResourceNotFoundException("Restaurent Not Found");
+        }
+
+        Optional<Menu> menu = menu_repo.findById(menuId);
+        if(!menu.isPresent()){
+            throw new ResourceNotFoundException("Menu Not Found");
+        }
+
+        Optional<Food> food = foodRepo.findById(foodId);
+        if(!food.isPresent()){
+            throw new ResourceNotFoundException("Food Not Found");
+        }
+
+        if(restaurent.get().getMenu() == null){
+            throw new ResourceNotFoundException("The Restaurent Menu is Not There");
+        }
+        else if(!(restaurent.get().getMenu().getMenu_id().equals(menuId))){
+            throw new ResourceConflictException("Restaurent Menu and given menu not Match");
+        }
+        else if(!(food.get().getMenu().getMenu_id().equals(menuId))){
+            throw new ResourceConflictException("Food Menu and given Menu Not Match");
+        }
+
+        Food deletedFood = food.get();
+        foodRepo.deleteById(foodId);
+        return deletedFood;
+    }
+
+    public Long getTotalFoodItemsCount(Long restaurentId, Long menuId) {
+        Optional<Restaurent> restaurent = restaurent_repo.findById(restaurentId);
+        if(!restaurent.isPresent()){
+            throw new ResourceNotFoundException("Restaurent Not Found");
+        }
+
+        Optional<Menu> menu = menu_repo.findById(menuId);
+        if(!menu.isPresent()){
+            throw new ResourceNotFoundException("Menu Not Found");
+        }
+
+        if(restaurent.get().getMenu() == null){
+            throw new ResourceNotFoundException("The Restaurent Menu is Not There");
+        }
+        else if(!(restaurent.get().getMenu().getMenu_id().equals(menuId))){
+            throw new ResourceConflictException("Restaurent Menu and given menu not Match");
+        }
+
+        return foodRepo.countByMenuMenuId(menuId);
+    }
+
+    public Long getActiveFoodItemsCount(Long restaurentId, Long menuId) {
+        Optional<Restaurent> restaurent = restaurent_repo.findById(restaurentId);
+        if(!restaurent.isPresent()){
+            throw new ResourceNotFoundException("Restaurent Not Found");
+        }
+
+        Optional<Menu> menu = menu_repo.findById(menuId);
+        if(!menu.isPresent()){
+            throw new ResourceNotFoundException("Menu Not Found");
+        }
+
+        if(restaurent.get().getMenu() == null){
+            throw new ResourceNotFoundException("The Restaurent Menu is Not There");
+        }
+        else if(!(restaurent.get().getMenu().getMenu_id().equals(menuId))){
+            throw new ResourceConflictException("Restaurent Menu and given menu not Match");
+        }
+
+        return foodRepo.countByMenuMenuIdAndIsAvailable(menuId, true);
+    }
+
+    public Long getInactiveFoodItemsCount(Long restaurentId, Long menuId) {
+        Optional<Restaurent> restaurent = restaurent_repo.findById(restaurentId);
+        if(!restaurent.isPresent()){
+            throw new ResourceNotFoundException("Restaurent Not Found");
+        }
+
+        Optional<Menu> menu = menu_repo.findById(menuId);
+        if(!menu.isPresent()){
+            throw new ResourceNotFoundException("Menu Not Found");
+        }
+
+        if(restaurent.get().getMenu() == null){
+            throw new ResourceNotFoundException("The Restaurent Menu is Not There");
+        }
+        else if(!(restaurent.get().getMenu().getMenu_id().equals(menuId))){
+            throw new ResourceConflictException("Restaurent Menu and given menu not Match");
+        }
+
+        return foodRepo.countByMenuMenuIdAndIsAvailable(menuId, false);
+    }
+    
 }

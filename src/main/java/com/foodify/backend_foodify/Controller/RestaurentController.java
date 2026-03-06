@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 
@@ -90,6 +91,15 @@ public class RestaurentController {
         response.setMessage("restaurtent created successfully");
         response.setSuccess(true);
         return new ResponseEntity<>(response, HttpStatus.CREATED);   
-        
+    }
+
+    @DeleteMapping("/{userId}/restaurent/{restaurentId}")
+    public ResponseEntity<ApiResponse<Restaurent>> deleteRestaurent(@PathVariable Long userId, @PathVariable Long restaurentId) {
+        Restaurent rst = rst_service.deleteRestaurent(restaurentId, userId);
+        ApiResponse<Restaurent> response = new ApiResponse<>();
+        response.setData(rst);
+        response.setMessage("Restaurent deleted successfully");
+        response.setSuccess(true);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,6 +26,18 @@ public class CartRestaurentController {
         ApiResponse<Page<Cart_Item>> response = new ApiResponse<>();
         response.setData(crt);
         response.setMessage("All cart data fetch successfull");
+        response.setSuccess(true);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/clear/{userId}/{restaurantId}")
+    public ResponseEntity<ApiResponse<?>> clearCartByRestaurant(
+            @PathVariable Long userId,
+            @PathVariable Long restaurantId) {
+
+        crt_src.clearCartByRestaurant(userId, restaurantId);
+        ApiResponse<?> response = new ApiResponse<>();
+        response.setMessage("CLeard Successfull");
         response.setSuccess(true);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

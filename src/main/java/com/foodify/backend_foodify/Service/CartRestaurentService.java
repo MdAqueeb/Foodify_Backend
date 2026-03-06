@@ -16,6 +16,7 @@ import com.foodify.backend_foodify.Entities.User;
 import com.foodify.backend_foodify.Exceptions.ResourceNotFoundException;
 import com.foodify.backend_foodify.Repository.CartItemRepo;
 import com.foodify.backend_foodify.Repository.CartRestaurentRepo;
+import com.foodify.backend_foodify.Repository.RestaurentRepo;
 import com.foodify.backend_foodify.Repository.UserRepo;
 
 @Service
@@ -29,6 +30,9 @@ public class CartRestaurentService {
 
     @Autowired
     private CartItemRepo crt_itm_repo;
+
+    @Autowired
+    private RestaurentRepo rst_repo;
 
     public Page<Cart_Item> getAllItems(Long userid, Long cartRestaurentId, int page, int size) {
         
@@ -45,6 +49,29 @@ public class CartRestaurentService {
         Pageable pge = PageRequest.of(page, size);
         Page<Cart_Item> crt_itms =  crt_itm_repo.getCartRestaurentItems(cartRestaurentId, pge);
         return crt_itms;
+    }
+
+    public void clearCartByRestaurant(Long userId, Long restaurantId) {
+        Optional<User> usr = userRepo.findById(userId);
+        if(!usr.isPresent()){
+            throw new ResourceNotFoundException("User not found");
+        }
+
+        Optional<Restaurent> rst = rst_repo.findById(restaurantId);
+        if(!rst.isPresent()){
+            throw new ResourceNotFoundException("Restaurent Not Found");
+        }
+
+        Optional<Cart_Restaurent> crt_rst = cartRestRepo.findByCart_Cart_idAndRestaurent_Restaurant_id(usr.get().getCart().getCart_id(), restaurantId);
+        if(!crt_rst.isPresent()){
+            throw new ResourceNotFoundException("Cart Restaurent Not Found");
+        }
+
+        cartRestRepo.deleteById(crt_rst.get().getCart_restaurent_id());
+        // Cart_Restaurent crtRst = cartRestRepo.findByUserIdAndRestaurantId(userId, restaurantId)
+        //         .orElseThrow(() -> new RuntimeException("Cart not found"));
+
+        // cartItemRepository.deleteByCart(cart);
     }
 
     // public Cart_Restaurent getOrCreate(

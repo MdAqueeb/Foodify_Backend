@@ -55,7 +55,7 @@ public class User_Address {
 
     @Column(name = "pin_code", nullable = false)
     @Length(min = 6, max = 6)
-    @NotNull
+    // @NotNull
     private Integer pin_code;
 
     @Column(name = "country", nullable = false)

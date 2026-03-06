@@ -18,9 +18,11 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Table(name = "wishlist_items")
+@ToString(exclude = "wishlist")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,7 +31,7 @@ public class Wishlist_item {
     @Id
     @Column(name = "wishlist_item_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long wishlist_id;
+    private Long wishlist_item_id;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "item_type", nullable = false)
@@ -43,7 +45,7 @@ public class Wishlist_item {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime created_at;
 
-    enum Item_type{
+    public enum Item_type{
         food, 
         restaurent
     }

@@ -35,7 +35,7 @@ import lombok.ToString;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = "cart")
+@ToString(exclude = {"cart", "wishlists"})
 
 public class User {
     
@@ -46,6 +46,9 @@ public class User {
 
     @Column(name = "profile_picture")
     private String profile_picture;
+
+    @Column(name = "profile_public_id")
+    private String profile_public_id;
 
     @Column(name = "name", nullable = false)
     @NotBlank(message = "Name does not empty or null")
@@ -90,9 +93,9 @@ public class User {
     @OneToMany(mappedBy="user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<User_Address> user_address ;
     // whislist 
-    @OneToMany(mappedBy="user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy="user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private List<Wishlist> wishlists ;
+    private Wishlist wishlists ;
     // cart
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
@@ -109,7 +112,7 @@ public class User {
     @PrePersist
     void defaultValues() {
         user_address = new ArrayList<>();
-        wishlists = new ArrayList<>();
+        // wishlists = new ArrayList<>();
         // cart = new ArrayList<>();
         restaurent = new ArrayList<>();
         order = new ArrayList<>();

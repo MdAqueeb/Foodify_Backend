@@ -168,7 +168,29 @@ public class RestaurentService {
         rest.setIsPopular(restaurent.getIsPopular());
         rest.setRestaurent_address(restaurent.getRestaurent_address());
         rest.setRestaurent_name(restaurent.getRestaurent_name());
+        // rest.setActive_status(restaurent.getActive_status());
         return rst_repo.save(rest);
+    }
+
+    @Transactional
+    public Restaurent deleteRestaurent(Long restaurentId, Long userId) {
+        Optional<Restaurent> rst = rst_repo.findById(restaurentId);
+        if(!rst.isPresent()){
+            throw new ResourceNotFoundException("Restaurent Not Found");
+        }
+
+        Optional<User> usr = usr_repo.findById(userId);
+        if(!usr.isPresent()){
+            throw new ResourceNotFoundException("User Not Found");
+        }
+
+        if(!rst.get().getUser().getUser_id().equals(usr.get().getUser_id())){
+            throw new ResourceConflictException("Owner Not Match");
+        }
+
+        Restaurent restaurent = rst.get();
+        rst_repo.deleteById(restaurentId);
+        return restaurent;
     }
     
 }

@@ -64,7 +64,7 @@ public class Food {
     private Boolean isAvailable = true;
 
     @Column(name = "rating", nullable = false)
-    @NotNull
+    // @NotNull
     @Builder.Default
     @JsonProperty("food_rating")
     private Double food_rating = 0.0;
@@ -143,5 +143,7 @@ public class Food {
         cartItems = new ArrayList<>();
         // orderItem = new ArrayList<>();
         created_at = LocalDateTime.now();
+        food_rating = 0.0;
+        food_popularity = false;
     }
 }

@@ -57,5 +57,17 @@ public interface FoodRepo extends JpaRepository<Food, Long>{
         nativeQuery = true
     )
     Page<Food> findByrestaurentMenu(Long menuId, Pageable pge);
+
+    @Query(
+        value = "SELECT COUNT(*) FROM foods WHERE menu_id = :menuId", 
+        nativeQuery = true
+    )
+    Long countByMenuMenuId(Long menuId);
+
+    @Query(
+        value = "SELECT COUNT(*) FROM foods WHERE menu_id = :menuId AND availability = :isAvailable", 
+        nativeQuery = true
+    )
+    Long countByMenuMenuIdAndIsAvailable(Long menuId, Boolean isAvailable);
     
 }

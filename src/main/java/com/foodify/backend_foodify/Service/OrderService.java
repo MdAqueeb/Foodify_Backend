@@ -142,6 +142,27 @@ public class OrderService {
         return order_repo.save(ord);
     }
 
+    /**
+     * Returns orders for a given user that have not been delivered yet.
+     * Active orders include created, cooking and on_the_way (cancelled treated as history).
+     */
+    public List<Order> getUserActiveOrders(Long userId) {
+        usr_repo.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
+        // exclude delivered status
+        return order_repo.findByUserUserIdAndOrderStatusNot(userId, Order.OrderStatus.deliverd.name());
+    }
+
+    /**
+     * Returns historical orders for a given user. Delivered and cancelled orders are considered history.
+     */
+    public List<Order> getUserHistoryOrders(Long userId) {
+        usr_repo.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
+        List<Order.OrderStatus> historyStatuses = List.of(Order.OrderStatus.deliverd, Order.OrderStatus.cancelled);
+        return order_repo.findByUserUserIdAndOrderStatusIn(userId, historyStatuses);
+    }
+
 
     private boolean isValidOwnerTransition(OrderStatus current, OrderStatus next) {
         switch (current) {

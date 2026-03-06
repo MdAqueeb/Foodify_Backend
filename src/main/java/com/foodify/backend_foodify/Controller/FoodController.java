@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -123,6 +124,46 @@ public class FoodController {
 
         response.setData(foods);
         response.setMessage("All Search food fetch successfully");
+        response.setSuccess(true);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @DeleteMapping("restaurent/{restaurentId}/Menu/{menuId}/Food/{foodId}")
+    public ResponseEntity<ApiResponse<Food>> deleteFood(@PathVariable Long restaurentId, @PathVariable Long menuId, @PathVariable Long foodId) {
+        Food deletedFood = foodService.deleteFood(restaurentId, menuId, foodId);
+        ApiResponse<Food> response = new ApiResponse<>();
+        response.setData(deletedFood);
+        response.setMessage("Food deleted successfully");
+        response.setSuccess(true);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("restaurent/{restaurentId}/Menu/{menuId}/food/count")
+    public ResponseEntity<ApiResponse<Long>> getTotalFoodItemsCount(@PathVariable Long restaurentId, @PathVariable Long menuId) {
+        Long count = foodService.getTotalFoodItemsCount(restaurentId, menuId);
+        ApiResponse<Long> response = new ApiResponse<>();
+        response.setData(count);
+        response.setMessage("Total food items count fetched successfully");
+        response.setSuccess(true);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("restaurent/{restaurentId}/Menu/{menuId}/food/active/count")
+    public ResponseEntity<ApiResponse<Long>> getActiveFoodItemsCount(@PathVariable Long restaurentId, @PathVariable Long menuId) {
+        Long count = foodService.getActiveFoodItemsCount(restaurentId, menuId);
+        ApiResponse<Long> response = new ApiResponse<>();
+        response.setData(count);
+        response.setMessage("Active food items count fetched successfully");
+        response.setSuccess(true);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("restaurent/{restaurentId}/Menu/{menuId}/food/inactive/count")
+    public ResponseEntity<ApiResponse<Long>> getInactiveFoodItemsCount(@PathVariable Long restaurentId, @PathVariable Long menuId) {
+        Long count = foodService.getInactiveFoodItemsCount(restaurentId, menuId);
+        ApiResponse<Long> response = new ApiResponse<>();
+        response.setData(count);
+        response.setMessage("Inactive food items count fetched successfully");
         response.setSuccess(true);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

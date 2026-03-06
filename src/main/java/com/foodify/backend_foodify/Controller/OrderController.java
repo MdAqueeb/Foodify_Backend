@@ -1,6 +1,7 @@
 package com.foodify.backend_foodify.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,8 +45,23 @@ public class OrderController {
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
-    // @GetMapping("")
-    // public ResponseEntity<ApiResponse<Page<Order>>> getAllActiveOrders(){
-        
-    // }
+    @GetMapping("user/{userId}/orders/active")
+    public ResponseEntity<ApiResponse<List<Order>>> getUserActiveOrders(@PathVariable Long userId) {
+        List<Order> orders = ord_service.getUserActiveOrders(userId);
+        ApiResponse<List<Order>> response = new ApiResponse<>();
+        response.setData(orders);
+        response.setSuccess(true);
+        response.setMessage("Active orders fetched successfully");
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("user/{userId}/orders/history")
+    public ResponseEntity<ApiResponse<List<Order>>> getUserHistoryOrders(@PathVariable Long userId) {
+        List<Order> orders = ord_service.getUserHistoryOrders(userId);
+        ApiResponse<List<Order>> response = new ApiResponse<>();
+        response.setData(orders);
+        response.setSuccess(true);
+        response.setMessage("Order history fetched successfully");
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }

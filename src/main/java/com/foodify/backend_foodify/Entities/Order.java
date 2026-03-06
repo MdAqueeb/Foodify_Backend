@@ -37,7 +37,7 @@ public class Order {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    @NotNull
+    // @NotNull
     private OrderStatus order_status;
 
     @Column(name = "cancelled_By")
@@ -72,10 +72,10 @@ public class Order {
 
         // created, cooking, on the way, deliverd,         cancelled
         // confirm, accept, asign to driver, mark pickup, 
-        created, 
-        cooking, 
-        on_the_way, 
-        deliverd,
+        created, // click to order button
+        cooking, // accept 
+        on_the_way, // assign to driver
+        deliverd, // if i click on mark pickup 
         cancelled
     }
 
@@ -104,6 +104,6 @@ public class Order {
         payment = new ArrayList<>();
         cancelled_By = Cancelled_By.not_cancel;
         order_status = OrderStatus.created;
-        order_payment = PaymentStatus.pending_payment;
+        order_payment = PaymentStatus.payment_success;
     }
 }
