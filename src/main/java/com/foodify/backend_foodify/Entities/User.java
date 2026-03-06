@@ -59,7 +59,6 @@ public class User {
     // @UniqueElements(message = "email must be unique")
     // @Pattern(regexp="^[A-Za-z][A-Za-z0-9._%+-]*@gmail\\\\.com$", message = "Email is not valid")
     private String email;
-
     
     @Column(name = "password", nullable = false)
     @NotBlank(message = "password does not empty or null")
@@ -111,6 +110,7 @@ public class User {
 
     @PrePersist
     void defaultValues() {
+<<<<<<< HEAD
         user_address = new ArrayList<>();
         // wishlists = new ArrayList<>();
         // cart = new ArrayList<>();
@@ -118,6 +118,18 @@ public class User {
         order = new ArrayList<>();
         payment = new ArrayList<>();
         created_at = LocalDateTime.now();
+=======
+        if (created_at == null) {
+        created_at = LocalDateTime.now();
+    }
+
+    // Initialize collections if null
+    if (user_address == null) user_address = new ArrayList<>();
+    if (wishlists == null) wishlists = new ArrayList<>();
+    if (restaurent == null) restaurent = new ArrayList<>();
+    if (order == null) order = new ArrayList<>();
+    if (payment == null) payment = new ArrayList<>();
+>>>>>>> 65c71674c8ce67ebd0e9526d53179f9f756b6a87
     }
 }
 
