@@ -18,10 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
-<<<<<<< HEAD
 import org.springframework.web.bind.annotation.PathVariable;
-=======
->>>>>>> 65c71674c8ce67ebd0e9526d53179f9f756b6a87
 import org.springframework.web.bind.annotation.RequestParam;
 
 
@@ -43,41 +40,6 @@ public class UserController {
         response.setSuccess(true);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
-<<<<<<< HEAD
-=======
-    
-    // login
-    @PostMapping("/login")
-    public ResponseEntity<ApiResponse<User>> postMethodName(@RequestBody LoginData credentials) {
-        User usr = usrService.validateCredentials(credentials);
-        ApiResponse<User> response = new ApiResponse<>();
-        response.setData(usr);
-        response.setMessage("User Register Successfull");
-        response.setSuccess(true);
-        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
-    }
-     
-    // forgot password 
-    @GetMapping("/verifyEmail")
-    public ResponseEntity<ApiResponse<User>> getMethodName(@RequestParam String email) {
-        User usr = usrService.verifyEmail(email);
-        ApiResponse<User> response = new ApiResponse<>();
-        response.setData(usr);
-        response.setMessage("Email Verified Successfull");
-        response.setSuccess(true);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }   
-
-    @PatchMapping("/forgot-password")
-    public ResponseEntity<ApiResponse<User>> forgotPassword(@RequestBody ForgotPassword email) {
-        User usr = usrService.updatePassword(email);
-        ApiResponse<User> response = new ApiResponse<>();
-        response.setData(usr);
-        response.setMessage("Password Updated Successfull");
-        response.setSuccess(true);
-        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
-    } 
->>>>>>> 65c71674c8ce67ebd0e9526d53179f9f756b6a87
     
     // login
     @PostMapping("/login")

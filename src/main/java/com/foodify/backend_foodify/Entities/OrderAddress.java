@@ -1,37 +1,29 @@
 package com.foodify.backend_foodify.Entities;
 
-import org.hibernate.validator.constraints.Length;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Entity
-@Table(name = "user_addresses")
+@Table(name = "order_addresses")
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User_Address {
-    
+public class OrderAddress {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "address_id")
+    @Column(name = "order_address_id")
     private Long address_id;
 
     @Column(name = "address_name", nullable = false)
@@ -50,8 +42,6 @@ public class User_Address {
     private String city;
 
     @Column(name = "pin_code", nullable = false)
-    // @Length(min = 6, max = 6)
-    // @NotNull
     private Integer pin_code;
 
     @Column(name = "country", nullable = false)
@@ -60,20 +50,5 @@ public class User_Address {
 
     @Column(name = "address_picture")
     private String address_picture;
-
-    // @Column(name = "default_address", nullable = false)
-    // @Builder.Default
-    // private boolean default_address = false;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    @ToString.Exclude
-    private User user;
-
-    @PrePersist
-    void assignValues() {
-        // order = new ArrayList<>();
-        // default_address = false;
-    }
 
 }

@@ -3,7 +3,7 @@ package com.foodify.backend_foodify.Entities;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -60,9 +60,9 @@ public class Order {
     @JoinColumn(name = "restaurent_id", nullable = false)
     private Restaurent restaurent;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "address_id", nullable = false)
-    private User_Address user_address;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "order_address_id", nullable = false)
+    private OrderAddress orderAddress;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "order_payment", nullable = false)
@@ -92,16 +92,22 @@ public class Order {
     }
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Order_item> orderItem;
 
     @OneToMany(mappedBy = "order", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    @JsonIgnore
     private List<Payment> payment;
 
     @PrePersist
     void assign_values(){
         created_at = LocalDateTime.now();
-        orderItem = new ArrayList<>();
-        payment = new ArrayList<>();
+        if (orderItem == null) {
+            orderItem = new ArrayList<>();
+        }
+        if (payment == null) {
+            payment = new ArrayList<>();
+        }
         cancelled_By = Cancelled_By.not_cancel;
         order_status = OrderStatus.created;
         order_payment = PaymentStatus.payment_success;

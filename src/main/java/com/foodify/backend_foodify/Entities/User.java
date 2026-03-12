@@ -35,7 +35,7 @@ import lombok.ToString;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"cart", "wishlists"})
+// @ToString(exclude = {"cart", "wishlists"})
 
 public class User {
     
@@ -90,18 +90,23 @@ public class User {
     private List<Payment> payment ;
     // useraddress
     @OneToMany(mappedBy="user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    @ToString.Exclude
     private List<User_Address> user_address ;
     // whislist 
     @OneToOne(mappedBy="user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
+    @ToString.Exclude
     private Wishlist wishlists ;
     // cart
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
+    @ToString.Exclude
     private Cart cart;
     // restaurents
     @OneToMany(mappedBy="user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
+    @ToString.Exclude
     private List<Restaurent> restaurent ;
     // orders
     @OneToMany(mappedBy="user", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -110,26 +115,16 @@ public class User {
 
     @PrePersist
     void defaultValues() {
-<<<<<<< HEAD
-        user_address = new ArrayList<>();
-        // wishlists = new ArrayList<>();
-        // cart = new ArrayList<>();
-        restaurent = new ArrayList<>();
-        order = new ArrayList<>();
-        payment = new ArrayList<>();
-        created_at = LocalDateTime.now();
-=======
         if (created_at == null) {
         created_at = LocalDateTime.now();
     }
 
     // Initialize collections if null
     if (user_address == null) user_address = new ArrayList<>();
-    if (wishlists == null) wishlists = new ArrayList<>();
+    // if (wishlists == null) wishlists = new ArrayList<>();
     if (restaurent == null) restaurent = new ArrayList<>();
     if (order == null) order = new ArrayList<>();
     if (payment == null) payment = new ArrayList<>();
->>>>>>> 65c71674c8ce67ebd0e9526d53179f9f756b6a87
     }
 }
 

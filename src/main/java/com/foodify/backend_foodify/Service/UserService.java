@@ -1,10 +1,7 @@
 package com.foodify.backend_foodify.Service;
 
-<<<<<<< HEAD
 import java.util.Optional;
 
-=======
->>>>>>> 65c71674c8ce67ebd0e9526d53179f9f756b6a87
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,10 +11,7 @@ import com.foodify.backend_foodify.DTO.LoginData;
 import com.foodify.backend_foodify.Entities.User;
 import com.foodify.backend_foodify.Exceptions.InvalidPasswordException;
 import com.foodify.backend_foodify.Exceptions.PasswordMismatchException;
-<<<<<<< HEAD
 import com.foodify.backend_foodify.Exceptions.ResourceConflictException;
-=======
->>>>>>> 65c71674c8ce67ebd0e9526d53179f9f756b6a87
 import com.foodify.backend_foodify.Exceptions.ResourceNotFoundException;
 import com.foodify.backend_foodify.Repository.UserRepo;
 
@@ -31,13 +25,10 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
     public User createNewUser(User user) {
-<<<<<<< HEAD
         User usr = usrRepo.findByEmail(user.getEmail());
         if(usr != null){
             throw new ResourceConflictException("User Already found");
         }
-=======
->>>>>>> 65c71674c8ce67ebd0e9526d53179f9f756b6a87
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return usrRepo.save(user);
     }
@@ -68,7 +59,6 @@ public class UserService {
         usr.setPassword(passwordEncoder.encode(forgotdata.getPassword()));
         return usrRepo.save(usr);
     }
-<<<<<<< HEAD
 
     public User getUserById(Long userid) {
         Optional<User> usr = usrRepo.findById(userid);
@@ -77,7 +67,5 @@ public class UserService {
         }
         return usr.get();
     }
-=======
->>>>>>> 65c71674c8ce67ebd0e9526d53179f9f756b6a87
     
 }

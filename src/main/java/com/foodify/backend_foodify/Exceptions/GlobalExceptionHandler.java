@@ -16,15 +16,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
-<<<<<<< HEAD
     @ExceptionHandler(ResourceConflictException.class)
     public ResponseEntity<ApiResponse<Object>> handleResourceConflict(ResourceConflictException ex){
         ApiResponse<Object> response = new ApiResponse<>(false, null, ex.getMessage());
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
 
-=======
->>>>>>> 65c71674c8ce67ebd0e9526d53179f9f756b6a87
     @ExceptionHandler(InvalidPasswordException.class)
     public ResponseEntity<ApiResponse<Object>> handleInvalidPasswordException(InvalidPasswordException ex){
         ApiResponse<Object> response = new ApiResponse<>(false, null, ex.getMessage());
@@ -36,13 +33,10 @@ public class GlobalExceptionHandler {
         ApiResponse<Object> response = new ApiResponse<>(false, null, ex.getMessage());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
-<<<<<<< HEAD
-
     @ExceptionHandler(RestaurentNotActiveException.class)
     public ResponseEntity<ApiResponse<Object>> handleRestaurentNotActive(RestaurentNotActiveException ex){
         ApiResponse<Object> response = new ApiResponse<>(false, null, ex.getMessage());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
-=======
->>>>>>> 65c71674c8ce67ebd0e9526d53179f9f756b6a87
+
 }

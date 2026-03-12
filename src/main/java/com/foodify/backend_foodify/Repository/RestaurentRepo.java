@@ -42,6 +42,13 @@ public interface RestaurentRepo extends JpaRepository<Restaurent, Long> {
         nativeQuery = true
     )
     Page<Restaurent> findByUserRstStatus(@Param("userid") Long userid,@Param("status") String status, PageRequest pageable);
+
+    @Query(
+        value = "SELECT * FROM restaurant WHERE owner_id = :userId AND active_status = :status",
+        // countQuery = "SELECT COUNT(*) FROM restaurant WHERE owner_id = :userid AND active_status IN :status",
+        nativeQuery = true
+    )
+    List<Restaurent> findByUserUserId(@Param("userId") Long userId, @Param("status") String status);
     
     
 }

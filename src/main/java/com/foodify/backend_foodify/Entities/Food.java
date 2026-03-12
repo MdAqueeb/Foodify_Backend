@@ -137,11 +137,15 @@ public class Food {
     // @JsonIgnore
     // private List<Order_item> orderItem;
 
+    @OneToMany(mappedBy = "food", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.PERSIST})
+    @JsonIgnore
+    private List<Order_item> order_items;
+
     @PrePersist
     void assignValues() {
         food_extra = new ArrayList<>();
         cartItems = new ArrayList<>();
-        // orderItem = new ArrayList<>();
+        order_items = new ArrayList<>();
         created_at = LocalDateTime.now();
         food_rating = 0.0;
         food_popularity = false;

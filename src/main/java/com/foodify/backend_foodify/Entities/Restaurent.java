@@ -24,12 +24,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Table(name = "restaurant")
 @Builder
 @Data
 @NoArgsConstructor
+// @ToString(exclude = "menus")
 @AllArgsConstructor
 public class Restaurent {
     
@@ -68,10 +70,12 @@ public class Restaurent {
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinColumn(name = "owner_id", nullable = false)
+    @ToString.Exclude
     private User user;
 
     @OneToOne(mappedBy = "restaurent", cascade = CascadeType.ALL, orphanRemoval = true)
     // @JsonIgnore
+    @ToString.Exclude
     private Menu menu;
 
     @OneToMany(mappedBy = "restaurent", cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})

@@ -21,12 +21,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Table(name = "menu")
 @Data
 @NoArgsConstructor
 @Builder
+// @ToString(exclude = "restaurent")
 @AllArgsConstructor
 public class Menu {
     @Id
@@ -37,6 +39,7 @@ public class Menu {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false, unique = true)
     @JsonIgnore
+    @ToString.Exclude
     private Restaurent restaurent;
 
     @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL, orphanRemoval = true)

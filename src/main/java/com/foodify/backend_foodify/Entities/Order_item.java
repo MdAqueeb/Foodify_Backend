@@ -39,11 +39,13 @@ public class Order_item {
     private Double item_price;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cart_item_id", nullable = false)
-    private Cart_Item cart_Item;
+    @JoinColumn(name = "food_id", nullable = false)
+    private Food food; // Point to Food, not Cart_Item
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id", nullable = false)
+    // @JsonIgnore
     private Order order;
 
     @OneToMany(mappedBy = "order_item", cascade = CascadeType.ALL, orphanRemoval = true)
