@@ -6,12 +6,9 @@ import com.foodify.backend_foodify.DTO.ApiResponse;
 import com.foodify.backend_foodify.Entities.Restaurent;
 import com.foodify.backend_foodify.Service.RestaurentService;
 
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.data.autoconfigure.web.DataWebProperties.Pageable;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

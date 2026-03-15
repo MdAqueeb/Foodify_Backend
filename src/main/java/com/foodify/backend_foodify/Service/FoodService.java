@@ -202,6 +202,8 @@ public class FoodService {
         Food.setTimeTake(foodDetails.getTimeTake());
         Food.setFood_category(foodDetails.getFood_category());
         Food.setFood_type(foodDetails.getFood_type());
+        Food.setFood_picture(foodDetails.getFood_picture());
+        Food.setPublicId(foodDetails.getPublicId());
         Food.setFoodtime(foodDetails.getFoodtime());
 
         return foodRepo.save(Food);
@@ -277,8 +279,9 @@ public class FoodService {
             fd.getFood_description(),
             fd.getFood_price(),
             fd.getTimeTake(),
-            fd.getFood_popularity(),
-            // fd.getPicture(),
+            fd.getFood_picture(),
+            fd.getPublicId(),
+            fd.getIsAvailable(),
             rst.getRestaurant_id(),
             rst.getRestaurent_name()
         );
@@ -315,7 +318,7 @@ public class FoodService {
         }
 
         Food deletedFood = food.get();
-        foodRepo.deleteById(foodId);
+        foodRepo.deleteById(food.get().getFood_id());
         return deletedFood;
     }
 
@@ -382,4 +385,7 @@ public class FoodService {
         return foodRepo.countByMenuMenuIdAndIsAvailable(menuId, false);
     }
     
+
+
+
 }

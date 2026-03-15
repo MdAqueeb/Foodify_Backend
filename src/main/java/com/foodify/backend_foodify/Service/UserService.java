@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import java.util.ArrayList;
 
 import com.foodify.backend_foodify.DTO.ForgotPassword;
 import com.foodify.backend_foodify.DTO.LoginData;
@@ -14,7 +15,10 @@ import com.foodify.backend_foodify.Exceptions.PasswordMismatchException;
 import com.foodify.backend_foodify.Exceptions.ResourceConflictException;
 import com.foodify.backend_foodify.Exceptions.ResourceNotFoundException;
 import com.foodify.backend_foodify.Repository.UserRepo;
-
+import com.foodify.backend_foodify.DTO.LoginResponse;
+import org.springframework.security.core.userdetails.UserDetails;
+import com.foodify.backend_foodify.Service.JwtService;
+import org.springframework.http.ResponseEntity;
 @Service
 public class UserService {
 
@@ -23,6 +27,10 @@ public class UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private JwtService jwtService;
+
 
     public User createNewUser(User user) {
         User usr = usrRepo.findByEmail(user.getEmail());
@@ -33,13 +41,21 @@ public class UserService {
         return usrRepo.save(user);
     }
 
-    public User validateCredentials(LoginData user) {
+    public LoginResponse validateCredentials(LoginData user) {
         User usr = verifyEmail(user.getEmail());
         
         if(!passwordEncoder.matches(user.getPassword(), usr.getPassword())){
             throw new InvalidPasswordException("User Password Invalid");
         }
-        return usr;
+        UserDetails userDetails = new org.springframework.security.core.userdetails.User(
+                usr.getEmail(),
+                usr.getPassword(),
+                new ArrayList<>()
+        );
+
+        String token = jwtService.generateToken(userDetails.getUsername());
+
+        return new LoginResponse(token, usr);
     }
 
     public User verifyEmail(String email) {

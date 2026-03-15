@@ -13,7 +13,10 @@ public class FoodWithRestaurentDTO {
     private String food_description;
     private Double food_price;
     private Integer timeTake;
-    private Boolean food_popularity;
+    private String food_picture;
+    private String publicId;
+    private Boolean isAvailable;
+    // private Boolean isAvailable;
     private Long restaurant_id;
     private String restaurent_name;
 }

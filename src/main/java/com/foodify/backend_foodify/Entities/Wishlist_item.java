@@ -42,6 +42,9 @@ public class Wishlist_item {
     @NotNull
     private Long item_id;
 
+    @NotNull
+    private Long restaurant_id;
+
     @Column(name = "created_at", nullable = false)
     private LocalDateTime created_at;
 

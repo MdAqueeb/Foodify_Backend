@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -51,6 +51,10 @@ public class Restaurent {
 
     @Column(name = "picture")
     private String restaurent_picture;
+
+    @JsonProperty("publicId")
+    @Column(name = "public_id")
+    private String publicId;
 
     @Column(name = "active_status", nullable = false)
     @Builder.Default

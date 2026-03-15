@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -28,6 +28,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class Cart_Item{
     
     @Id
@@ -45,10 +46,12 @@ public class Cart_Item{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cart_restaurent_id", nullable = false)
     @JsonIgnore
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Cart_Restaurent cart_restaurent;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "food_id", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Food food;
 
     @OneToMany(mappedBy = "cart_item", cascade = CascadeType.ALL, orphanRemoval = true)

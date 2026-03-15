@@ -35,7 +35,7 @@ public class CartRestaurentService {
     private RestaurentRepo rst_repo;
 
     public Page<Cart_Item> getAllItems(Long userid, Long cartRestaurentId, int page, int size) {
-        
+        System.out.println("Cart Items by using Cart Rest =======>");
         Optional<User> usr = userRepo.findById(userid);
         if(!usr.isPresent()){
             throw new ResourceNotFoundException("User not found");

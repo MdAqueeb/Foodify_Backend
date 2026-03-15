@@ -6,7 +6,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -34,6 +34,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data 
 @NoArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @AllArgsConstructor
 public class Food {
     
@@ -46,6 +47,14 @@ public class Food {
     @NotBlank
     @JsonProperty("food_name")
     private String food_name;
+
+    @Column(name = "food_picture")
+    @JsonProperty("food_picture")
+    private String food_picture;
+
+    @Column(name = "publicId")
+    @JsonProperty("publicId")
+    private String publicId;
 
     @Column(name = "food_description", nullable = false)
     @NotBlank
@@ -105,6 +114,7 @@ public class Food {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "menu_id", nullable = false)
     @JsonIgnore
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Menu menu;
 
     public enum FoodType{

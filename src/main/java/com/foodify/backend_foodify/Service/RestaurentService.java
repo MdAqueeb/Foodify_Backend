@@ -1,7 +1,7 @@
 package com.foodify.backend_foodify.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,6 +22,9 @@ import com.foodify.backend_foodify.Repository.RestaurentRepo;
 import com.foodify.backend_foodify.Repository.UserRepo;
 
 import jakarta.transaction.Transactional;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
+
 
 @Service
 public class RestaurentService {
@@ -34,6 +37,9 @@ public class RestaurentService {
 
     @Autowired
     private MenuRepo menu_repo;
+
+    @Autowired
+    private Cloudinary cloudinary;
 
     public Page<Restaurent> getRestaurentsByStatus(String status, int page, int size, String sort) {
         PageRequest pageable = PageRequest.of(page, size);
@@ -160,7 +166,12 @@ public class RestaurentService {
         if(!rst.isPresent()){
             throw new ResourceNotFoundException("Restaurent Not Found");
         }
-
+        if(!rst.get().getUser().getUser_id().equals(usr.get().getUser_id())){
+            throw new ResourceConflictException("Owner Not Match");
+        }
+        if(restaurent.getPublicId() != null && rst.get().getPublicId() != null && !restaurent.getPublicId().equals(rst.get().getPublicId())){
+            deleteImageFromCloudinary(rst.get().getPublicId());
+        }
         Restaurent rest = rst.get();
         rest.setRestaurent_picture(restaurent.getRestaurent_picture());
         rest.setRestaurent_service_fee(restaurent.getRestaurent_service_fee());
@@ -168,6 +179,9 @@ public class RestaurentService {
         rest.setIsPopular(restaurent.getIsPopular());
         rest.setRestaurent_address(restaurent.getRestaurent_address());
         rest.setRestaurent_name(restaurent.getRestaurent_name());
+        rest.setPublicId(restaurent.getPublicId());
+        rest.setRestaurent_delivary_fee(restaurent.getRestaurent_delivary_fee());
+        rest.setRestaurent_brand(restaurent.getRestaurent_brand());
         // rest.setActive_status(restaurent.getActive_status());
         return rst_repo.save(rest);
     }
@@ -189,8 +203,22 @@ public class RestaurentService {
         }
 
         Restaurent restaurent = rst.get();
+
+        if(restaurent.getPublicId() != null){
+            deleteImageFromCloudinary(restaurent.getPublicId());
+        }
         rst_repo.deleteById(restaurentId);
         return restaurent;
+    }
+
+    public void deleteImageFromCloudinary(String publicId) {
+        try {
+            Map result = cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
+            System.out.println("Cloudinary deletion result: " + result);
+        } catch (Exception e) {
+            // Log the exception or handle it as needed
+            System.err.println("Error deleting image from Cloudinary: " + e.getMessage());
+        }
     }
     
 }

@@ -205,7 +205,7 @@ public class OrderService {
     public List<Order> getUserHistoryOrdersByAdmin(Long restaurentId) {
         rst_repo.findById(restaurentId)
                 .orElseThrow(() -> new ResourceNotFoundException("Restaurent Not Found"));
-        List<Order.OrderStatus> historyStatuses = List.of(Order.OrderStatus.deliverd, Order.OrderStatus.cancelled);
+        List<String> historyStatuses = List.of(Order.OrderStatus.deliverd.name(), Order.OrderStatus.cancelled.name());
         return order_repo.findByRestaurentIdAndOrderStatusIn(restaurentId, historyStatuses);
     }
 

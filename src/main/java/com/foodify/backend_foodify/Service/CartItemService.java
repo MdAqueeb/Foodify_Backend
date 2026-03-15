@@ -131,17 +131,16 @@ public class CartItemService {
         Cart_Item item = cart_item_repo.findById(cartItemId)
             .orElseThrow(() -> new ResourceNotFoundException("Cart Item Not found"));
 
-        Cart_Restaurent crt_rst = item.getCart_restaurent();
+        
+        // Cart_Restaurent crt_rst = item.getCart_restaurent();
+        Cart_Restaurent crt_rst = crt_rst_repo.findById(cartId)
+            .orElseThrow(() -> new ResourceNotFoundException("Cart Restaurent Not found"));
 
         if (user.getCart() == null || 
-            !user.getCart().getCart_id().equals(cartId)) {
+            !user.getCart().getCart_id().equals(crt_rst.getCart().getCart_id())) {
             throw new ResourceConflictException("User cart mismatch");
         }
-
-        if (!crt_rst.getCart().getCart_id().equals(cartId)) {
-            throw new ResourceConflictException("Cart restaurant mismatch");
-        }
-
+        
         crt_rst.setTotal_amount(
             crt_rst.getTotal_amount() - item.getPrice()
         );

@@ -44,7 +44,7 @@ public interface OrderRepo extends JpaRepository<Order, Long> {
         value = "SELECT * FROM orders WHERE restaurent_id = :restaurentId AND status IN :statuses", 
         nativeQuery = true
     )
-    List<Order> findByRestaurentIdAndOrderStatusIn(@Param("restaurentId") Long restaurentId, @Param("statuses") List<Order.OrderStatus> statuses);    
+    List<Order> findByRestaurentIdAndOrderStatusIn(@Param("restaurentId") Long restaurentId, @Param("statuses") List<String> statuses);    
     // List<Order> findByRestaurentIdAndOrderStatusIn(Long restaurentId, List<OrderStatus> historyStatuses);
 
     @Query(

@@ -8,6 +8,8 @@ import com.foodify.backend_foodify.DTO.LoginData;
 import com.foodify.backend_foodify.Entities.User;
 import com.foodify.backend_foodify.Service.UserService;
 
+
+
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +22,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
-
+import com.foodify.backend_foodify.DTO.LoginResponse;
+import org.springframework.security.authentication.AuthenticationManager;
 
 
 @RestController
 @Validated
 public class UserController {
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     @Autowired
     private UserService usrService;
@@ -43,13 +49,13 @@ public class UserController {
     
     // login
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse<User>> postMethodName(@RequestBody LoginData credentials) {
-        User usr = usrService.validateCredentials(credentials);
-        ApiResponse<User> response = new ApiResponse<>();
-        response.setData(usr);
+    public ResponseEntity<ApiResponse<LoginResponse>> postMethodName(@RequestBody LoginData credentials) {
+        LoginResponse loginResponse = usrService.validateCredentials(credentials);
+        ApiResponse<LoginResponse> response = new ApiResponse<>();
+        response.setData(loginResponse);
         response.setMessage("User Register Successfull");
         response.setSuccess(true);
-        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
      
     // forgot password 

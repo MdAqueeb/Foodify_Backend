@@ -48,14 +48,19 @@ public class CartItemController {
     } 
 
     @PatchMapping("/items/{cartItemId}")
-    public ResponseEntity<Cart_Item> updateQuantity(
+    public ResponseEntity<ApiResponse<Cart_Item>> updateQuantity(
             @PathVariable Long cartItemId,
             @RequestParam String action) {
 
         Cart_Item updatedCart =
                 cartItem_service.updateQuantity(cartItemId, action);
 
-        return ResponseEntity.ok(updatedCart);
+        ApiResponse<Cart_Item> response = new ApiResponse<>();
+        response.setData(updatedCart);
+        response.setSuccess(true);
+        response.setMessage("Quantity updated successfully");
+        
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     
